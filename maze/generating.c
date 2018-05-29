@@ -1,5 +1,6 @@
 #include "generating.h"
 #include <Windows.h>
+
 int init(int *x, int *y) {
 	int i, j;
 	Node *iter;
@@ -20,19 +21,16 @@ int init(int *x, int *y) {
 				iter->x = i;
 				iter->y = j;
 				iter->dirs = 15; //각 노드마다 방문할 지도를 초기화 합니다. 00001111.
-				//iter->c = "■";
 			}
-			//else iter->c = "■"; //나머지 노드들은 벽으로 초기화 합니다. 벽은 방향이나 좌표를 갖지 않습니다.(0으로 초기화 됩니다.)
 		}
 	}
 
-	draw();
+	//draw();
 	return 0;
 }
 
-
 Node *link(Node *n) {
-	//입력받은 노드(이하 노드n)와 이웃 노드를 연결합니다. 그리고 연결된 노드를 반환합니다. 
+	//입력받은 노드(이하 노드n)와 이웃 노드를 연결합니다. 이웃 노드를 반환합니다. 
 	
 	int x, y; //이웃 노드의 좌표 값을 담을 변수입니다.
 	char dir; //노드 n이 방문할 방향을 담을 변수입니다.
@@ -95,7 +93,7 @@ Node *link(Node *n) {
 		dest = maze + x + y * width;
 
 		//이웃 노드가 길인지 벽인지 확인합니다.
-		if (dest->c == "■") {
+		if (dest->c == "■") { //이웃 노드가 벽인 경우.
 			
 			//이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
 			if (dest->parent != NULL) continue;
@@ -109,20 +107,28 @@ Node *link(Node *n) {
 
 			//이웃 노드의 벽을 부십니다.
 			maze[x + y * width].c = "  ";
-			draw();
+			//draw();
 
 			//이웃 노드를 반환합니다.
 			return dest;
 		}
-		else if (dest->c == "  ") {
+		else if (dest->c == "  ") { //이웃 노드가 길인 경우.
+			int ran = rand() % 10;
 			
+			if (!ran)
+				maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
+			//draw();
 		}
 	}
 
 	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
-	n->c = "ⓝ";
-	draw();
+	n->c = "  ";
+	//draw();
 	return n->parent;
+}
+
+int setEnd() {
+	
 }
 
 void draw() {
