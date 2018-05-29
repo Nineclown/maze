@@ -1,5 +1,4 @@
 #include "generating.h"
-#include <Windows.h>
 
 int init(int *x, int *y) {
 	int i, j;
@@ -113,7 +112,7 @@ Node *link(Node *n) {
 			return dest;
 		}
 		else if (dest->c == "  ") { //이웃 노드가 길인 경우.
-			int ran = rand() % 10;
+			int ran = rand() % 10;	//랜덤으로 길 뚫어.
 			
 			if (!ran)
 				maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
@@ -122,13 +121,9 @@ Node *link(Node *n) {
 	}
 
 	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
-	n->c = "  ";
+	n->c = "ⓝ";
 	//draw();
 	return n->parent;
-}
-
-int setEnd() {
-	
 }
 
 void draw() {

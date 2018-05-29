@@ -1,10 +1,9 @@
 #ifndef __GNR_MAZE_H_
 #define __GNR_MAZE_H_
 
+//#include "Turboc.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
+#include <Windows.h>
 
 typedef struct node {
 	int x, y; //노드의 위치를 담는 변수입니다.

@@ -1,5 +1,5 @@
-#include"util.h"
-#include "graph.h"
+#include "util.h"
+#include "generating.h"
 
 int main() {
 	Node *start, *last;
@@ -17,7 +17,7 @@ int main() {
 	start->parent = start;
 	start->c = "ⓢ";
 	last = start;
-	draw();
+	//draw();
 	//시작점에서 출발해서 모든 0을 다 탐색하고 다시 start로 돌아옵니다.
 	while ((last = link(last)) != start);
 	//결과.
@@ -31,6 +31,14 @@ int main() {
 	*
 	*
 	*/
+
+	// 밑에 6줄은 그래프 만들다가 빡쳐서 만든 게임입니다ㅠㄴ
+	system("cls");
+	removeCursor();
+	setCursor(0,0);
+	showBoard();
+	character_static();
+	getchar();
 
 	return 0;
 }
