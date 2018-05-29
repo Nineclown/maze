@@ -7,7 +7,7 @@ void DieWithError(char* errorMessage) {
 	exit(1);
 }
 
-int chkInvalidInput(int* x, int* y) {
+int chkInvalidInput(int *x, int *y) {
 	if ((scanf_s("%d", x) + scanf_s("%d", y)) < 2) {
 		perror("invalid maze type!\n");
 		exit(1);

@@ -13,22 +13,18 @@ int main() {
 		DieWithError("error");
 
 	//Setup start node
-	start = nodes + 1 + width;
+	start = maze + 1 + width;
 	start->parent = start;
-	start->c = 'S';
+	start->c = "ⓢ";
 	last = start;
 
-	char a = 64;
-	//Connect nodes until start node is reached and can't be left
 	//시작점에서 출발해서 모든 0을 다 탐색하고 다시 start로 돌아온다.
-	while ((last = link(last)) != start) {
-		last->c = ++a;
-	}
+	while ((last = link(last)) != start);
 	
-	printf("setup end\n");
 	//결과.
 	draw();
-	
+	printf("setup end\n");
+
 	return 0;
 }
 
