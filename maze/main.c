@@ -17,10 +17,9 @@ int main() {
 	start->parent = start;
 	start->c = "ⓢ";
 	last = start;
-
-	//시작점에서 출발해서 모든 0을 다 탐색하고 다시 start로 돌아온다.
+	draw();
+	//시작점에서 출발해서 모든 0을 다 탐색하고 다시 start로 돌아옵니다.
 	while ((last = link(last)) != start);
-	
 	//결과.
 	draw();
 	printf("setup end\n");

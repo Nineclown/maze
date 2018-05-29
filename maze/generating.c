@@ -15,14 +15,14 @@ int init(int *x, int *y) {
 		for (j = 0; j < height; j++) {
 
 			iter = maze + i + j * width;
-
+			iter->c = "■";
 			if (i * j % 2) { //임의의 노드를 벽이 아니게 만듭니다. 미로의 가장자리 부분은 반드시 벽이되어야 합니다.
 				iter->x = i;
 				iter->y = j;
 				iter->dirs = 15; //각 노드마다 방문할 지도를 초기화 합니다. 00001111.
-				iter->c = "  ";
+				//iter->c = "■";
 			}
-			else iter->c = "■"; //나머지 노드들은 벽으로 초기화 합니다. 벽은 방향이나 좌표를 갖지 않습니다.(0으로 초기화 됩니다.)
+			//else iter->c = "■"; //나머지 노드들은 벽으로 초기화 합니다. 벽은 방향이나 좌표를 갖지 않습니다.(0으로 초기화 됩니다.)
 		}
 	}
 
@@ -91,11 +91,11 @@ Node *link(Node *n) {
 			break;
 		}
 
-		//임의의 방향으로 방문해서 찾아낸 이웃 노드를 dest에 담습니다.
+		//방문해서 찾아낸 이웃 노드를 dest에 담습니다.
 		dest = maze + x + y * width;
 
 		//이웃 노드가 길인지 벽인지 확인합니다.
-		if (dest->c == "  ") {
+		if (dest->c == "■") {
 			
 			//이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
 			if (dest->parent != NULL) continue;
@@ -106,15 +106,22 @@ Node *link(Node *n) {
 			//두 노드를 가로막는 벽을 제거합니다.
 			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
 			draw();
-			Sleep(600);
+
+			//이웃 노드의 벽을 부십니다.
+			maze[x + y * width].c = "  ";
+			draw();
+
 			//이웃 노드를 반환합니다.
 			return dest;
+		}
+		else if (dest->c == "  ") {
+			
 		}
 	}
 
 	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
+	n->c = "ⓝ";
 	draw();
-	Sleep(600);
 	return n->parent;
 }
 
@@ -128,4 +135,6 @@ void draw() {
 			printf("%s", maze[i + j * width].c);
 		printf("\n");
 	}
+
+	Sleep(100);
 }
