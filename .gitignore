@@ -327,3 +327,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+.vs/maze/v15/Browse.VC.opendb
+.vs/maze/v15/Browse.VC.opendb
