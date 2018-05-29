@@ -103,7 +103,7 @@ Node *link(Node *n) {
 
 			//두 노드를 가로막는 벽을 제거합니다.
 			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
-			draw();
+			//draw();
 
 			//이웃 노드의 벽을 부십니다.
 			maze[x + y * width].c = "  ";
