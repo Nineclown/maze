@@ -32,14 +32,15 @@ int main() {
 	*
 	*/
 
-	// 밑에 6줄은 그래프 만들다가 빡쳐서 만든 게임입니다ㅠㄴ
-	system("cls");
-	removeCursor();
-	setCursor(0,0);
-	showBoard();
-	character_static();
-	getchar();
+	//// 밑에 6줄은 그래프 만들다가 빡쳐서 만든 게임입니다ㅠㄴ
+	//system("cls");
+	//removeCursor();
+	//setCursor(0,0);
+	//showBoard();
+	//character_static();
+	//getchar();
 
+	system("pause");
 	return 0;
 }
 

@@ -27,7 +27,6 @@ int chkInvalidInput(int *x, int *y) {
 	return 0;
 }
 
-
 //간단한 게임을 위한 함수들
 void setCursor(int x, int y) {
 	COORD pos;
@@ -62,7 +61,7 @@ void showBoard(void) {
 		}
 		printf("\n");
 	}
-	
+
 	//checkMouse(&x, &y);
 	//maze[x + y * width].c = "ⓔ";
 	//draw();
@@ -147,30 +146,4 @@ int detect(int x, int y) {
 		return 2;
 	else
 		return 0;
-}
-
-
-void checkMouse(int *x, int *y) {
-
-	INPUT_RECORD rec;
-	DWORD        dwNOER;
-
-	while (1)
-	{
-		ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), &rec, 1, &dwNOER); // 콘솔창 입력을 받아들임.
-		if (rec.EventType == MOUSE_EVENT) // 마우스 이벤트일 경우
-		{
-			if (rec.Event.MouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED) // 좌측 버튼이 클릭되었을 경우
-			{
-				*x = rec.Event.MouseEvent.dwMousePosition.X; // X값 받아옴
-				*y = rec.Event.MouseEvent.dwMousePosition.Y; // Y값 받아옴
-				COORD Coor = { 0, 0 };
-				DWORD dw;
-				FillConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE), ' ', 80 * 25, Coor, &dw); // 콘솔창 화면을 지운다.
-				SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coor); // 커서를 0, 0으로 이동시킨다.
-				printf("%d, %d", *x, *y); // 좌표를 출력한다.
-				return;
-			}
-		}
-	}
 }

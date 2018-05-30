@@ -25,5 +25,4 @@ void showCharacter(void);
 void RemoveCharacter_Set(int x, int y);
 int detect(int x, int y);
 
-void checkMouse(int *x, int *y);
 #endif
