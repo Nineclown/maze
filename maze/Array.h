@@ -1,7 +1,7 @@
 #ifndef __ARRAY_H_
 #define __ARRAY_H_
 
-typedef void * Element;
+typedef void *Element;
 
 typedef struct array {
 	Element *base;
