@@ -9,11 +9,12 @@
 #include <Windows.h>
 #include <conio.h>
 #include <time.h>
-#include "generating.h"
+#include "gen_maze.h"
 
 //편의성을 위한 함수.
 void DieWithError(char* errorMessage);
-int chkInvalidInput(int* x, int* y);
+
+int runMiniGame();
 
 //게임에 사용되는 함수.
 void setCursor(int x, int y);

@@ -6,28 +6,19 @@ void DieWithError(char* errorMessage) {
 	exit(1);
 }
 
-int chkInvalidInput(int *x, int *y) {
-	if ((scanf_s("%d", x) + scanf_s("%d", y)) < 2) {
-		perror("invalid maze type!\n");
-		exit(1);
-	}
-	if (init(x, y)) {
-		perror("calloc failed. parameter ");
-		exit(1);
-	}
+//간단한 게임을 위한 함수들
 
-	if (!(width % 2) || !(height % 2)) {
-		perror("faild");
-		exit(1);
-	}
-	if (width <= 0 || height <= 0) {
-		perror("faild");
-		exit(1);
-	}
+int runMiniGame() {
+	// game
+	system("cls");
+	removeCursor();
+	setCursor(0,0);
+	showBoard();
+	character_static();
+	getchar();
+
 	return 0;
 }
-
-//간단한 게임을 위한 함수들
 void setCursor(int x, int y) {
 	COORD pos;
 	pos.X = x;
@@ -53,6 +44,7 @@ void removeCursor(void) {
 
 void showBoard(void) {
 	int x = 0, y = 0;
+	//COORD cur = getCursor();
 
 	for (x = 0; x < width; x++) {
 		for (y = 0; y < height; y++) {
@@ -61,7 +53,7 @@ void showBoard(void) {
 		}
 		printf("\n");
 	}
-
+	//setCursor(cur.X, cur.Y);
 	//checkMouse(&x, &y);
 	//maze[x + y * width].c = "ⓔ";
 	//draw();
