@@ -1,20 +1,21 @@
 #include "util.h"
 #include "gen_maze.h"
+#include "gen_graph.h"
 
 int main() {
 	int i = 0, j = 0;
-	//Graph *graph = New_Graph();
-	//Array *neighbor = New_Array();
+	maze_graph = New_Graph();
+	Array *neighbor = New_Array();
 
 	//start maze.
-	genMaze(1, 1);
+	Maze_Generating(1, 1);
 
 	//start game
 	//runMiniGame();
-	initMaze();
-	draw();
+	Maze_ReInit();
+	Maze_Draw();
 	printf("is it? %s", maze[1 + 1 * width].c);
-
+	Graph_ViewVerexs(maze_graph);
 	
 	//시작 값 초기화.
 	//maze->parent = start.

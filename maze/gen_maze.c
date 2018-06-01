@@ -1,6 +1,6 @@
 #include "gen_maze.h"
 
-int init(int x, int y) {
+int Maze_Init(int x, int y) {
 	int i, j;
 	Node *iter;
 
@@ -28,7 +28,7 @@ int init(int x, int y) {
 	return 0;
 }
 
-Node *link(Node *n) {
+Node *Maze_Link(Node *n) {
 	//입력받은 노드(이하 노드n)와 이웃 노드를 연결합니다. 이웃 노드를 반환합니다. 
 	
 	int x, y; //이웃 노드의 좌표 값을 담을 변수입니다.
@@ -112,7 +112,7 @@ Node *link(Node *n) {
 			return dest;
 		}
 		else if (dest->c == "  ") { //이웃 노드가 길인 경우.
-			int ran = rand() % 10;	//랜덤으로 길을 뚫어서 경로를 여러개 만듭니다.			
+			int ran = rand() % 15;	//랜덤으로 길을 뚫어서 경로를 여러개 만듭니다.			
 			if (!ran)
 				maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
 			//draw();
@@ -124,14 +124,14 @@ Node *link(Node *n) {
 	return n->parent;
 }
 
-int genMaze(int x, int y) {
+int Maze_Generating(int x, int y) {
 	Node *start, *last, *end;
 
 	//호출할 함수에서 돌아가야 다이나믹한 미로가 생성됩니다.
 	srand(time(NULL));
 
 	//1. 미로를 생성할 수 있는지 검사하고 초기화 합니다.
-	if (chkInvalidInput() != 0)
+	if (Maze_CheckInput() != 0)
 		DieWithError("error");
 
 	//2. 시작 노드를 설정합니다.
@@ -142,15 +142,15 @@ int genMaze(int x, int y) {
 	//draw();
 
 	//3. 길을 잇습니다. 완전히 길이 생성될 때까지.
-	while ((last = link(last)) != start);
+	while ((last = Maze_Link(last)) != start);
 	
 	//4. 결과.
-	draw();
+	Maze_Draw();
 
 	return 0;
 }
 
-void draw() {
+void Maze_Draw() {
 	system("cls");
 	int i, j;
 
@@ -164,7 +164,7 @@ void draw() {
 	Sleep(100);
 }
 
-int chkInvalidInput() {
+int Maze_CheckInput() {
 	int x = 0, y = 0;
 	printf("input X: Y: ");
 	
@@ -175,7 +175,7 @@ int chkInvalidInput() {
 	}
 
 	//입력받은 크기를 바탕으로 미로를 초기화 합니다.
-	if (init(x, y)) {
+	if (Maze_Init(x, y)) {
 		perror("calloc failed. parameter ");
 		exit(1);
 	}

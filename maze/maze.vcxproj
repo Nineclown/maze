@@ -120,12 +120,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Array.c" />
     <ClCompile Include="gen_graph.c" />
     <ClCompile Include="gen_maze.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Array.h" />
     <ClInclude Include="gen_graph.h" />
     <ClInclude Include="gen_maze.h" />
     <ClInclude Include="util.h" />
