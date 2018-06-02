@@ -8,6 +8,8 @@ int Maze_ReInit() {
 		for (j = 0; j < height; j++) {
 			iter = maze + i + j * width;
 			if (iter->c != "■") {
+				iter->x = i;
+				iter->y = j;
 				iter->parent = 0;
 				if (!Maze_FindDir(iter))
 					DieWithError("Maze_FindDir");
@@ -51,16 +53,16 @@ int Maze_FindDir(Node *n) {
 	return 1;
 }
 
-Node *Graph_Generating(Node *n) {
+int Graph_SetVnE(Node *n) {
 	//갖고 있어야 하는 값. 딱 노드에 들어섰을 때
 	//여기가 vertex인가?
-
 	int name = maze_graph->vertexs->usage;
 	if (n->c == "ⓥ") {
 		//현재 vertex의 수는?
 		//vertex의 수가 0일 경우<= 처음으로 찾음
 		if (vertexs->usage == 0) {
-			Array_PushBack(vertexs, Graph_AddVertex(maze_graph, name, n->x, n->y));
+			Graph_AddVertex(maze_graph, name, n->x, n->y);
+			Array_PushBack(vertexs, Graph_GetVertex(maze_graph, n->x, n->y));
 			COUNT = 0;
 		}
 
@@ -69,47 +71,63 @@ Node *Graph_Generating(Node *n) {
 		//처음 vertex는 지운다.
 		//count를 0으로 초기화한다.
 		else if (vertexs->usage == 1) {
-			//이미 있는 vertex일 경우, 그냥 배열만 업데이트하면 된다?
-			if ( !(Array_PushBack(vertexs, Graph_AddVertex(maze_graph, name, n->x, n->y))) ) {
-				Array_PushBack(vertexs, Graph_getVertex(maze_graph, n->x, n->y));
-				Array_Erase(vertexs, Array_Begin(vertexs));
+			//vertex가 존재하지 않든 존재하든 일단 생성을 시도합니다.
+			if (Graph_AddVertex(maze_graph, name, n->x, n->y)) {
+				//printf("vertex추가(%d)\n", name);
 			}
-			else {
-				Graph_AddEdge(maze_graph, *(Vertex*)(*Array_Begin(vertexs)), *(Vertex *)(*(Array_End(vertexs) - 1)), COUNT);
-				Array_Erase(vertexs, Array_Begin(vertexs));
-				COUNT = 0;
+			//else
+			//printf("vertex추가실패. 이미 존재(%d)\n", name);
+
+			//그리고 현재 위치의 vertex가 생성되었거나 원래 있었거나 상관없이 결국 존재하면 Array에 담습니다.
+			Array_PushBack(vertexs, Graph_GetVertex(maze_graph, n->x, n->y));
+			//printf("배열 정보: [0]: %d, [1]: %d\n", ((Vertex *)Array_GetAt(vertexs, 0))->name, ((Vertex *)Array_GetAt(vertexs, 1))->name);
+			//배열의 정보를 바탕으로 edge를 생성하는데, 이미 생성된 edge는 0이고 성공은 1이다.
+			if (Graph_AddEdge(maze_graph, *(Vertex*)(*Array_Begin(vertexs)), *(Vertex *)(*(Array_End(vertexs) - 1)), COUNT)) {
+				//printf("edge추가(%d - %d)\n", ((Vertex*)*Array_Begin(vertexs))->name, ((Vertex*)*(Array_End(vertexs) - 1))->name);
 			}
+			//else
+			//printf("edge추가실패(이미 존재함) (%d - %d)\n", ((Vertex*)*Array_Begin(vertexs))->name, ((Vertex*)*(Array_End(vertexs) - 1))->name);
+
+			//그리고 나서 Array에 처음 들어온 놈은 지운다.
+			Array_Erase(vertexs, Array_Begin(vertexs));
+			//printf("배열 정보: [0]: %d, [1]: %d\n", ((Vertex *)Array_GetAt(vertexs, 0))->name, ((Vertex *)Array_GetAt(vertexs, 1))->name);
+			COUNT = 0;
 		}
 	}
+
+	//여기가 vertex가 아니다.
+	//count를 올린다.
 	else {
 
 	}
-	//여기가 vertex가 아니다.
-	//count를 올린다.
+	return 1;
+}
 
-	//이제는 길을 연결하는 작업을 하면 되나? 
-	int x, y; //이웃 노드의 좌표 값을 담을 변수입니다.
-	char dir; //노드 n이 방문할 방향을 담을 변수입니다.
-	Node *dest; //이웃 노드를 가리킬 포인터 변수입니다.
-
+Node *Graph_Link(Node *n) {
+	
+	Graph_SetVnE(n);
+	//이제는 길을 연결하는 작업.
+	int x = 0, y = 0; //이웃 노드의 좌표 값을 담을 변수입니다.
+	char dir = 0; //노드 n이 방문할 방향을 담을 변수입니다.
+	Node *dest = 0; //이웃 노드를 가리킬 포인터 변수입니다.
+	int count = 0;
 	//노드 n이 잘못된 경우.
 	if (n == NULL) return NULL;
 
 	//노드 n이 아직 방문할 방향이 남아있는 경우, 모든 방향을 방문할 때까지 반복합니다.
-	int count = 0;
 	while (n->dirs) {
-		//rand()를 통해 임의의 방향을 정합니다.
+
 		if (count >= 4)
 			DieWithError("rr");
 		dir = (1 << count++);
 
-		//임의의 방향이 이미 노드 n이 방문한 방향인 경우,
+		//이미 노드 n이 방문한 방향인 경우,
 		if (~n->dirs & dir) continue;
 
 		//노드 n의 dir값에 방문 표시를 남깁니다.
 		n->dirs &= ~dir;
 
-		//임의의 방향을 방문합니다.
+		//방문합니다.
 		switch (dir) {
 			//0001은 오른쪽입니다.
 		case 1:
@@ -131,7 +149,7 @@ Node *Graph_Generating(Node *n) {
 
 			//0100은 왼입니다.
 		case 4:
-			if (n->y - 1 >  0) {
+			if (n->y - 1 > 0) {
 				x = n->x;
 				y = n->y - 1;
 			}
@@ -140,7 +158,7 @@ Node *Graph_Generating(Node *n) {
 
 			//1000은 위쪽입니다.
 		case 8:
-			if (n->x - 1 >  0) {
+			if (n->x - 1 > 0) {
 				x = n->x - 1;
 				y = n->y;
 			}
@@ -152,7 +170,18 @@ Node *Graph_Generating(Node *n) {
 		dest = maze + x + y * width;
 
 		//이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
-		if (dest->parent != NULL) continue;
+		if (dest->parent != NULL) {
+			if (dest->c == "ⓥ") {
+				COUNT++;
+				Array_PushBack(vertexs, Graph_GetVertex(maze_graph, dest->x, dest->y));
+				if (Graph_AddEdge(maze_graph, *(Vertex*)(*Array_Begin(vertexs)), *(Vertex *)(*(Array_End(vertexs) - 1)), COUNT)) {
+					//printf("edge추가(%d - %d)\n", ((Vertex*)*Array_Begin(vertexs))->name, ((Vertex*)*(Array_End(vertexs) - 1))->name);
+				}
+				Array_Erase(vertexs, Array_Begin(vertexs));
+				COUNT = 0;
+			}
+			continue;
+		}
 
 		//그 외의 경우, 이웃 노드와 노드 n을 연결합니다.
 		dest->parent = n;
@@ -165,6 +194,30 @@ Node *Graph_Generating(Node *n) {
 	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
 	//draw();
 	return n->parent;
+}
+
+int Graph_Generating() {
+	Node *start, *last;
+
+	//그래프 요소들 초기화.
+	maze_graph = New_Graph();
+	vertexs = New_Array();
+	Array_SetSize(vertexs, 0, 0);
+
+	//미로 --> 그래프 변환
+	Maze_ReInit();
+	Maze_Draw();
+
+	//시작 주소 설정.
+	start = maze + 1 + 1 * width;
+	start->parent = start;
+	last = start;
+	
+	while ((last = Graph_Link(last)) != start);
+	//Graph_ViewVerexs(maze_graph);
+	//Graph_ViewEdges(maze_graph);
+
+	return 1;
 }
 
 Graph *New_Graph() {
@@ -201,7 +254,7 @@ void Delete_Graph(Graph * graph) {
 	//seek = Array_Begin(graph);
 }
 
-Vertex *Graph_AddVertex(Graph *graph, int name, int x, int y) {
+int Graph_AddVertex(Graph *graph, int name, int x, int y) {
 	if (Graph_ExistVertex(graph, x, y)) {
 		return 0;
 	}
@@ -210,10 +263,10 @@ Vertex *Graph_AddVertex(Graph *graph, int name, int x, int y) {
 	vertex = New_Vertex(name, x, y);
 	Array_PushBack(graph->vertexs, vertex);
 
-	return vertex;
+	return 1;
 }
 
-Vertex *Graph_getVertex(Graph *graph, int x, int y) {
+Vertex *Graph_GetVertex(Graph *graph, int x, int y) {
 	Iterator seek = 0, end = 0;
 	Vertex *stored_pt = 0;
 	seek = Array_Begin(graph->vertexs);
@@ -288,8 +341,6 @@ void Graph_ViewEdges(Graph *graph) {
 		printf("('%d' ,'%d'):%d\n", edge->vt1.name, edge->vt2.name, edge->weight);
 	}
 }
-
-
 
 int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2) {
 	Iterator seek = 0, end = 0;

@@ -102,8 +102,8 @@ Node *Maze_Link(Node *n) {
 
 			//두 노드를 가로막는 벽을 제거합니다.
 			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
-			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].x = n->x + (x - n->x) / 2;
-			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].y = (n->y + (y - n->y) / 2);
+			//maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].x = n->x + (x - n->x) / 2;
+			//maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].y = (n->y + (y - n->y) / 2);
 
 			//draw();
 

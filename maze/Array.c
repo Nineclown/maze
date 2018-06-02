@@ -36,8 +36,8 @@ int Array_PushBack(Array *arr, Element data) {
 }
 
 int Array_Insert(Array *arr, Iterator pos, Element data) {
-	int index = pos - arr->base; //포인터 연산으로도 정수 값이 나오네요?
-	int mcount = arr->usage - index; //
+	int index = pos - arr->base; 
+	int mcount = arr->usage - index;
 	if (arr->capacity == arr->usage) { //배열이 가득찬 상태인 경우,
 		if (arr->capacity) { //배열에 이미 값이 있을 경우,
 			arr->capacity *= 2; //용량 2배로1

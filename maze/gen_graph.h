@@ -29,14 +29,18 @@ Array *vertexs;
 int Maze_ReInit();
 int Maze_FindDir(Node *n);
 
-Node * Graph_Generating(Node * n);
+int Graph_SetVnE(Node * n);
+
+Node *Graph_Link(Node * n);
+
+int Graph_Generating();
 
 Graph *New_Graph();
 Vertex *New_Vertex(int name, int x, int y);
 Edge *New_Edge(Vertex vt1, Vertex vt2, int weight);
 void Delete_Graph(Graph *graph);
-Vertex *Graph_AddVertex(Graph *graph, int name, int x, int y);
-Vertex *Graph_getVertex(Graph * graph, int x, int y);
+int Graph_AddVertex(Graph *graph, int name, int x, int y);
+Vertex *Graph_GetVertex(Graph * graph, int x, int y);
 int Graph_AddEdge(Graph *graph, Vertex vt1, Vertex vt2, int weight);
 int Graph_ExistVertex(Graph *graph, int x, int y);
 int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2);

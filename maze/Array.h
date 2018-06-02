@@ -18,10 +18,10 @@ void Delete_Array(Array *arr); //배열을 제거합니다.
 void Array_SetSize(Array *arr, int capacity, Element data); //배열의 크기를 설정합니다.
 int Array_PushBack(Array *arr, Element data); //배열의 뒤에 요소를 추가합니다.
 int Array_Insert(Array *arr, Iterator pos, Element data); //배열에 요소를 추가합니다.
-void Array_SetAt(Array *arr, int index, Element data); //모르겠습니다.
+void Array_SetAt(Array *arr, int index, Element data);
 Element Array_GetAt(Array *arr, int index); //배열의 값을 가져옵니다.
 Iterator Array_Begin(Array *arr); //배열의 첫번째 요소 값을 가져옵니다.
 Iterator Array_End(Array *arr); //배열의 마지막 요소 값을 가져옵니다.
-void Array_Erase(Array *arr, Iterator pos); //배열의 특정 요소를 제거하는 것 같은데요.
+void Array_Erase(Array *arr, Iterator pos); //배열의 특정 요소를 제거
 
 #endif
