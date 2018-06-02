@@ -1,20 +1,20 @@
 #include "gen_graph.h"
 
-
 int Maze_ReInit() {
 	int i = 0, j = 0;
 
-	//초기화.
-	NUM = 10;
-	Node * iter;
+	Node *iter;
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			iter = maze + i + j * width;
 			if (iter->c != "■") {
-				Maze_FindDir(iter);
+				iter->parent = 0;
+				if (!Maze_FindDir(iter))
+					DieWithError("Maze_FindDir");
 			}
 		}
 	}
+	Maze_Draw();
 	return 1;
 }
 
@@ -22,41 +22,149 @@ int Maze_FindDir(Node *n) {
 	char dirs = 0;
 	int count = 0;
 	//오른쪽 0001
-	if (maze[n->x + (n->y - 1) * width].c != "■") {
-		dirs += 1;
-		count++;
-	}
-	//위쪽
-	if (maze[n->x - 1 + n->y * width].c != "■") {
-		dirs += 2;
-		count++;
-	}
-	//왼쪽
 	if (maze[n->x + (n->y + 1) * width].c != "■") {
-		dirs += 4;
+		dirs += 1;
 		count++;
 	}
 	//아래쪽
 	if (maze[n->x + 1 + n->y * width].c != "■") {
+		dirs += 2;
+		count++;
+	}
+	//왼쪽
+	if (maze[n->x + (n->y - 1) * width].c != "■") {
+		dirs += 4;
+		count++;
+	}
+	//위쪽
+	if (maze[n->x - 1 + n->y * width].c != "■") {
 		dirs += 8;
 		count++;
 	}
 	n->dirs = dirs;
 
+	//버택스 마크만 한다.
 	if (count >= 3 || count <= 1) {
-		//이 때는 반드시 vertex가 만들어져야 한다.
-		Graph_AddVertex(maze_graph, NUM++, n->x, n->y);
-		if (n->c == "ⓢ") {
-		}
-		else if (count == 1) {
-			n->c = "ⓔ";
-		}
-		else
-			n->c = "ⓥ";
-
+		n->c = "ⓥ";
 	}
 
 	return 1;
+}
+
+Node *Graph_Generating(Node *n) {
+	//갖고 있어야 하는 값. 딱 노드에 들어섰을 때
+	//여기가 vertex인가?
+
+	int name = maze_graph->vertexs->usage;
+	if (n->c == "ⓥ") {
+		//현재 vertex의 수는?
+		//vertex의 수가 0일 경우<= 처음으로 찾음
+		if (vertexs->usage == 0) {
+			Array_PushBack(vertexs, Graph_AddVertex(maze_graph, name, n->x, n->y));
+			COUNT = 0;
+		}
+
+		//vertex의 수가 1일 경우 <= 이미 하나가 있을 때 다른 하나를 찾음
+		//edge를 만든다.
+		//처음 vertex는 지운다.
+		//count를 0으로 초기화한다.
+		else if (vertexs->usage == 1) {
+			//이미 있는 vertex일 경우, 그냥 배열만 업데이트하면 된다?
+			if ( !(Array_PushBack(vertexs, Graph_AddVertex(maze_graph, name, n->x, n->y))) ) {
+				Array_PushBack(vertexs, Graph_getVertex(maze_graph, n->x, n->y));
+				Array_Erase(vertexs, Array_Begin(vertexs));
+			}
+			else {
+				Graph_AddEdge(maze_graph, *(Vertex*)(*Array_Begin(vertexs)), *(Vertex *)(*(Array_End(vertexs) - 1)), COUNT);
+				Array_Erase(vertexs, Array_Begin(vertexs));
+				COUNT = 0;
+			}
+		}
+	}
+	else {
+
+	}
+	//여기가 vertex가 아니다.
+	//count를 올린다.
+
+	//이제는 길을 연결하는 작업을 하면 되나? 
+	int x, y; //이웃 노드의 좌표 값을 담을 변수입니다.
+	char dir; //노드 n이 방문할 방향을 담을 변수입니다.
+	Node *dest; //이웃 노드를 가리킬 포인터 변수입니다.
+
+	//노드 n이 잘못된 경우.
+	if (n == NULL) return NULL;
+
+	//노드 n이 아직 방문할 방향이 남아있는 경우, 모든 방향을 방문할 때까지 반복합니다.
+	int count = 0;
+	while (n->dirs) {
+		//rand()를 통해 임의의 방향을 정합니다.
+		if (count >= 4)
+			DieWithError("rr");
+		dir = (1 << count++);
+
+		//임의의 방향이 이미 노드 n이 방문한 방향인 경우,
+		if (~n->dirs & dir) continue;
+
+		//노드 n의 dir값에 방문 표시를 남깁니다.
+		n->dirs &= ~dir;
+
+		//임의의 방향을 방문합니다.
+		switch (dir) {
+			//0001은 오른쪽입니다.
+		case 1:
+			if (n->y + 1 < height - 1) {
+				x = n->x;
+				y = n->y + 1;
+			}
+			else continue;
+			break;
+
+			//0010은 아래쪽입니다.
+		case 2:
+			if (n->x + 1 < width - 1) {
+				x = n->x + 1;
+				y = n->y;
+			}
+			else continue;
+			break;
+
+			//0100은 왼입니다.
+		case 4:
+			if (n->y - 1 >  0) {
+				x = n->x;
+				y = n->y - 1;
+			}
+			else continue;
+			break;
+
+			//1000은 위쪽입니다.
+		case 8:
+			if (n->x - 1 >  0) {
+				x = n->x - 1;
+				y = n->y;
+			}
+			else continue;
+			break;
+		}
+
+		//방문해서 찾아낸 이웃 노드를 dest에 담습니다.
+		dest = maze + x + y * width;
+
+		//이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
+		if (dest->parent != NULL) continue;
+
+		//그 외의 경우, 이웃 노드와 노드 n을 연결합니다.
+		dest->parent = n;
+		COUNT++;
+		//draw();
+		//이웃 노드를 반환합니다.
+		return dest;
+	}
+
+	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
+	//draw();
+	return n->parent;
 }
 
 Graph *New_Graph() {
@@ -93,8 +201,8 @@ void Delete_Graph(Graph * graph) {
 	//seek = Array_Begin(graph);
 }
 
-int Graph_AddVertex(Graph *graph, int name, int x, int y) {
-	if (Graph_ExistVertex(graph, name)) {
+Vertex *Graph_AddVertex(Graph *graph, int name, int x, int y) {
+	if (Graph_ExistVertex(graph, x, y)) {
 		return 0;
 	}
 
@@ -102,25 +210,10 @@ int Graph_AddVertex(Graph *graph, int name, int x, int y) {
 	vertex = New_Vertex(name, x, y);
 	Array_PushBack(graph->vertexs, vertex);
 
-	return 1;
+	return vertex;
 }
 
-int Graph_AddEdge(Graph *graph, Vertex vt1, Vertex vt2, int weight) {
-	if (Graph_ExistVertex(graph, vt1.name) && Graph_ExistVertex(graph, vt2.name)) {
-		Edge *edge = 0; //간선을 생성하기 위한 코딩규칙.
-
-		if (Graph_ExistEdge(graph, vt1, vt2))
-			return 0; //이미 두 vertex 간의 edge가 존재한다면 실패합니다.
-		//그 외
-		edge = New_Edge(vt1, vt2, weight);
-		Array_PushBack(graph->edges, edge);
-		
-		return 1;
-	}
-	return 0;
-}
-
-int Graph_ExistVertex(Graph *graph, int vt_name) {
+Vertex *Graph_getVertex(Graph *graph, int x, int y) {
 	Iterator seek = 0, end = 0;
 	Vertex *stored_pt = 0;
 	seek = Array_Begin(graph->vertexs);
@@ -129,7 +222,39 @@ int Graph_ExistVertex(Graph *graph, int vt_name) {
 	for (seek = seek; seek != end; ++seek) {
 		stored_pt = (Vertex *)(*seek);
 
-		if (stored_pt->name ==  vt_name) {
+		if (stored_pt->x == x && stored_pt->y == y) {
+			return stored_pt;
+		}
+	}
+
+	return 0;
+}
+
+int Graph_AddEdge(Graph *graph, Vertex vt1, Vertex vt2, int weight) {
+	if (Graph_ExistVertex(graph, vt1.x, vt1.y) && Graph_ExistVertex(graph, vt2.x, vt2.y)) {
+		Edge *edge = 0; //간선을 생성하기 위한 코딩규칙.
+
+		if (Graph_ExistEdge(graph, vt1, vt2))
+			return 0; //이미 두 vertex 간의 edge가 존재한다면 실패합니다.
+		//그 외
+		edge = New_Edge(vt1, vt2, weight);
+		Array_PushBack(graph->edges, edge);
+
+		return 1;
+	}
+	return 0;
+}
+
+int Graph_ExistVertex(Graph *graph, int x, int y) {
+	Iterator seek = 0, end = 0;
+	Vertex *stored_pt = 0;
+	seek = Array_Begin(graph->vertexs);
+	end = Array_End(graph->vertexs);
+
+	for (seek = seek; seek != end; ++seek) {
+		stored_pt = (Vertex *)(*seek);
+
+		if (stored_pt->x == x && stored_pt->y == y) {
 			return 1; //true를 위해 1을 리턴.
 		}
 	}
@@ -146,9 +271,24 @@ void Graph_ViewVerexs(Graph *graph) {
 
 	for (seek = seek; seek != end; ++seek) {
 		vt = (Vertex *)(*seek);
-		printf("%d\n", vt->name);
+		printf("%d: x: %d y: %d\n", vt->name, vt->x, vt->y);
 	}
 }
+
+void Graph_ViewEdges(Graph *graph) {
+	Iterator seek = 0, end = 0;
+	Edge *edge = 0;
+
+	printf("간선 개수:%d\n", graph->edges->usage);
+	seek = Array_Begin(graph->edges);
+	end = Array_End(graph->edges);
+
+	for (seek = seek; seek != end; ++seek) {
+		edge = (Edge *)(*seek);
+		printf("('%d' ,'%d'):%d\n", edge->vt1.name, edge->vt2.name, edge->weight);
+	}
+}
+
 
 
 int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2) {

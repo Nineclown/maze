@@ -102,6 +102,9 @@ Node *Maze_Link(Node *n) {
 
 			//두 노드를 가로막는 벽을 제거합니다.
 			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
+			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].x = n->x + (x - n->x) / 2;
+			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].y = (n->y + (y - n->y) / 2);
+
 			//draw();
 
 			//이웃 노드의 벽을 부십니다.
@@ -125,7 +128,7 @@ Node *Maze_Link(Node *n) {
 }
 
 int Maze_Generating(int x, int y) {
-	Node *start, *last, *end;
+	Node *start, *last;
 
 	//호출할 함수에서 돌아가야 다이나믹한 미로가 생성됩니다.
 	srand(time(NULL));

@@ -23,20 +23,25 @@ typedef struct _graph {
 
 Graph *maze_graph;
 int NUM;
+int COUNT;
+Array *vertexs;
 
 int Maze_ReInit();
 int Maze_FindDir(Node *n);
+
+Node * Graph_Generating(Node * n);
 
 Graph *New_Graph();
 Vertex *New_Vertex(int name, int x, int y);
 Edge *New_Edge(Vertex vt1, Vertex vt2, int weight);
 void Delete_Graph(Graph *graph);
-int Graph_AddVertex(Graph *graph, int name, int x, int y);
+Vertex *Graph_AddVertex(Graph *graph, int name, int x, int y);
+Vertex *Graph_getVertex(Graph * graph, int x, int y);
 int Graph_AddEdge(Graph *graph, Vertex vt1, Vertex vt2, int weight);
-int Graph_ExistVertex(Graph *graph, int vt_name);
+int Graph_ExistVertex(Graph *graph, int x, int y);
 int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2);
 int Edge_Include(Edge * edge, Vertex vt);
 
 void Graph_ViewVerexs(Graph *graph);
-
+void Graph_ViewEdges(Graph *graph);
 #endif

@@ -16,8 +16,8 @@ typedef Element *Iterator; //Element를 가리키는 포인터. iter or temp로 사용.
 Array *New_Array(); //배열을 생성합니다.
 void Delete_Array(Array *arr); //배열을 제거합니다.
 void Array_SetSize(Array *arr, int capacity, Element data); //배열의 크기를 설정합니다.
-void Array_PushBack(Array *arr, Element data); //배열의 뒤에 요소를 추가합니다.
-void Array_Insert(Array *arr, Iterator pos, Element data); //배열에 요소를 추가합니다.
+int Array_PushBack(Array *arr, Element data); //배열의 뒤에 요소를 추가합니다.
+int Array_Insert(Array *arr, Iterator pos, Element data); //배열에 요소를 추가합니다.
 void Array_SetAt(Array *arr, int index, Element data); //모르겠습니다.
 Element Array_GetAt(Array *arr, int index); //배열의 값을 가져옵니다.
 Iterator Array_Begin(Array *arr); //배열의 첫번째 요소 값을 가져옵니다.

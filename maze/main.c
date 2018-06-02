@@ -1,11 +1,13 @@
 #include "util.h"
 #include "gen_maze.h"
 #include "gen_graph.h"
+#include "main.h"
 
 int main() {
-	int i = 0, j = 0;
+	Node *start, *last;
 	maze_graph = New_Graph();
-	Array *neighbor = New_Array();
+	vertexs = New_Array();
+	Array_SetSize(vertexs, 0, 0);
 
 	//start maze.
 	Maze_Generating(1, 1);
@@ -14,15 +16,14 @@ int main() {
 	//runMiniGame();
 	Maze_ReInit();
 	Maze_Draw();
-	printf("is it? %s", maze[1 + 1 * width].c);
+
+	start = maze + 1 + 1 * width;
+	start->parent = start;
+	last = start;
+	while ((last = Graph_Generating(last)) != start);
 	Graph_ViewVerexs(maze_graph);
+	Graph_ViewEdges(maze_graph);
 	
-	//시작 값 초기화.
-	//maze->parent = start.
-
-
-
-
 
 
 	//Graph_AddVertex(graph, "S");

@@ -28,12 +28,14 @@ void Array_SetSize(Array *arr, int capacity, Element data) {
 	}
 }
 
-void Array_PushBack(Array *arr, Element data) {
+int Array_PushBack(Array *arr, Element data) {
+	if (data == 0)
+		return 0;
 	Iterator at = Array_End(arr); //현재 배열의 마지막 요소. 
-	Array_Insert(arr, at, data);
+	return Array_Insert(arr, at, data);
 }
 
-void Array_Insert(Array *arr, Iterator pos, Element data) {
+int Array_Insert(Array *arr, Iterator pos, Element data) {
 	int index = pos - arr->base; //포인터 연산으로도 정수 값이 나오네요?
 	int mcount = arr->usage - index; //
 	if (arr->capacity == arr->usage) { //배열이 가득찬 상태인 경우,
@@ -50,6 +52,7 @@ void Array_Insert(Array *arr, Iterator pos, Element data) {
 	memcpy(arr->base + index + 1, arr->base + index, sizeof(Element)*mcount);
 	arr->base[index] = data;
 	arr->usage++;
+	return 1;
 }
 
 void Array_SetAt(Array *arr, int index, Element data) {
