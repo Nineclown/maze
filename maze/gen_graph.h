@@ -44,8 +44,13 @@ Vertex *Graph_GetVertex(Graph * graph, int x, int y);
 int Graph_AddEdge(Graph *graph, Vertex vt1, Vertex vt2, int weight);
 int Graph_ExistVertex(Graph *graph, int x, int y);
 int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2);
-int Edge_Include(Edge * edge, Vertex vt);
+int Edge_Include(Edge * edge, int vt_name);
+
+Vertex *Edge_AnOther(Edge * edge, int vt_name);
+
+void Graph_FindNeighbor(Graph * graph, int vt_name, Array * neighbor);
 
 void Graph_ViewVerexs(Graph *graph);
+void Array_View(Array * array);
 void Graph_ViewEdges(Graph *graph);
 #endif

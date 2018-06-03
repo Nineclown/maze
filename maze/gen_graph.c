@@ -10,7 +10,10 @@ int Maze_ReInit() {
 			if (iter->c != "■") {
 				iter->x = i;
 				iter->y = j;
-				iter->parent = 0;
+				if (iter->c == "ⓢ")
+					iter->parent = iter;
+				else
+					iter->parent = 0;
 				if (!Maze_FindDir(iter))
 					DieWithError("Maze_FindDir");
 			}
@@ -47,7 +50,11 @@ int Maze_FindDir(Node *n) {
 
 	//버택스 마크만 한다.
 	if (count >= 3 || count <= 1) {
-		n->c = "ⓥ";
+		if (n->c == "ⓢ") {
+			//nothing
+		}
+		else
+			n->c = "ⓥ";
 	}
 
 	return 1;
@@ -57,7 +64,7 @@ int Graph_SetVnE(Node *n) {
 	//갖고 있어야 하는 값. 딱 노드에 들어섰을 때
 	//여기가 vertex인가?
 	int name = maze_graph->vertexs->usage;
-	if (n->c == "ⓥ") {
+	if (n->c == "ⓥ" || n->c == "ⓢ") {
 		//현재 vertex의 수는?
 		//vertex의 수가 0일 경우<= 처음으로 찾음
 		if (vertexs->usage == 0) {
@@ -104,7 +111,7 @@ int Graph_SetVnE(Node *n) {
 }
 
 Node *Graph_Link(Node *n) {
-	
+
 	Graph_SetVnE(n);
 	//이제는 길을 연결하는 작업.
 	int x = 0, y = 0; //이웃 노드의 좌표 값을 담을 변수입니다.
@@ -197,8 +204,10 @@ Node *Graph_Link(Node *n) {
 }
 
 int Graph_Generating() {
-	Node *start, *last;
-
+	Node *start = 0;
+	Node *last = 0;
+	Node *iter = 0;
+	Array *neibor = New_Array();
 	//그래프 요소들 초기화.
 	maze_graph = New_Graph();
 	vertexs = New_Array();
@@ -208,14 +217,19 @@ int Graph_Generating() {
 	Maze_ReInit();
 	Maze_Draw();
 
-	//시작 주소 설정.
-	start = maze + 1 + 1 * width;
-	start->parent = start;
+	//미로에서 시작점을 찾습니다.
+	iter = maze;
+	while (iter->c != "ⓢ")
+		iter++;
+	start = iter;
 	last = start;
-	
+
 	while ((last = Graph_Link(last)) != start);
 	//Graph_ViewVerexs(maze_graph);
 	//Graph_ViewEdges(maze_graph);
+	Graph_FindNeighbor(maze_graph, 1, neibor);
+	
+	Array_View(neibor);
 
 	return 1;
 }
@@ -328,6 +342,18 @@ void Graph_ViewVerexs(Graph *graph) {
 	}
 }
 
+void Array_View(Array *array) {
+	Iterator seek = 0, end = 0;
+	Vertex *vt = 0;
+	seek = Array_Begin(array);
+	end = Array_End(array);
+
+	for (seek = seek; seek != end; ++seek) {
+		vt = (Vertex *)(*seek);
+		printf("%d: x: %d y: %d\n", vt->name, vt->x, vt->y);
+	}
+}
+
 void Graph_ViewEdges(Graph *graph) {
 	Iterator seek = 0, end = 0;
 	Edge *edge = 0;
@@ -350,14 +376,42 @@ int Graph_ExistEdge(Graph *graph, Vertex vt1, Vertex vt2) {
 
 	for (seek = seek; seek != end; ++seek) {
 		stored_eg = (Edge *)(*seek);
-		if (Edge_Include(stored_eg, vt1) && Edge_Include(stored_eg, vt2)) {
+		if (Edge_Include(stored_eg, vt1.name) && Edge_Include(stored_eg, vt2.name)) {
 			return 1; //true를 나타내기 위해 1를 리턴.
 		}
 	}
 	return 0;
 }
 
-int Edge_Include(Edge *edge, Vertex vt) {
-	return (edge->vt1.name == vt.name) || (edge->vt2.name == vt.name);
+int Edge_Include(Edge *edge, int vt_name) {
+	return (edge->vt1.name == vt_name) || (edge->vt2.name == vt_name);
+}
+
+Vertex *Edge_AnOther(Edge *edge, int vt_name) {
+	if (edge->vt1.name == vt_name) {
+		return &edge->vt2;
+	}
+
+	if (edge->vt2.name == vt_name) {
+		return &edge->vt1;
+	}
+	return NULL;
+}
+
+void Graph_FindNeighbor(Graph *graph, int vt_name, Array *neighbor) {
+	Iterator seek = 0, end = 0;
+	Edge *edge = 0;
+
+	seek = Array_Begin(graph->edges);
+	end = Array_End(graph->edges);
+
+	for (seek = seek; seek != end; ++seek) {
+		edge = (Edge *)(*seek);
+		if (Edge_Include(edge, vt_name)) {
+			Vertex *opt;
+			opt = Edge_AnOther(edge, vt_name);
+			Array_PushBack(neighbor, opt);
+		}
+	}
 }
 

@@ -134,7 +134,7 @@ int Maze_Generating(int x, int y) {
 	srand(time(NULL));
 
 	//1. 미로를 생성할 수 있는지 검사하고 초기화 합니다.
-	if (Maze_CheckInput() != 0)
+	if (!Maze_CheckInput())
 		DieWithError("error");
 
 	//2. 시작 노드를 설정합니다.
@@ -150,7 +150,7 @@ int Maze_Generating(int x, int y) {
 	//4. 결과.
 	Maze_Draw();
 
-	return 0;
+	return 1;
 }
 
 void Maze_Draw() {
@@ -194,5 +194,5 @@ int Maze_CheckInput() {
 		perror("faild");
 		exit(1);
 	}
-	return 0;
+	return 1;
 }
