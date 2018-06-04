@@ -40,7 +40,7 @@ int Array_Insert(Array *arr, Iterator pos, Element data) {
 	int mcount = arr->usage - index;
 	if (arr->capacity == arr->usage) { //배열이 가득찬 상태인 경우,
 		if (arr->capacity) { //배열에 이미 값이 있을 경우,
-			arr->capacity *= 2; //용량 2배로1
+			arr->capacity *= 2; //용량 2배로.
 		}
 		else { //배열을 생성만 하고 set을 안했을 경우엔 0으로 초기화되어 있습니다.
 			arr->capacity = 1;
@@ -81,5 +81,9 @@ void Array_Erase(Array *arr, Iterator pos) {
 	int mcount = arr->usage - index - 1;
 	memcpy(pos, pos + 1, sizeof(Element)*mcount);
 	arr->usage--;
+}
+
+int Array_IsEmpty(Array *arr) {
+	return (arr->usage == 0);
 }
 

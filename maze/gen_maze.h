@@ -1,7 +1,6 @@
 #ifndef __GEN_MAZE_H_
 #define __GEN_MAZE_H_
 
-//#include "Turboc.h"
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>

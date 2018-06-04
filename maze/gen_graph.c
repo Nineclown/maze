@@ -63,13 +63,13 @@ int Maze_FindDir(Node *n) {
 int Graph_SetVnE(Node *n) {
 	//갖고 있어야 하는 값. 딱 노드에 들어섰을 때
 	//여기가 vertex인가?
-	int name = maze_graph->vertexs->usage;
+	int name = maze_graph->vertexs->usage + 1; //vertex의 이름은 1부터 시작.
 	if (n->c == "ⓥ" || n->c == "ⓢ") {
 		//현재 vertex의 수는?
 		//vertex의 수가 0일 경우<= 처음으로 찾음
 		if (vertexs->usage == 0) {
 			Graph_AddVertex(maze_graph, name, n->x, n->y);
-			Array_PushBack(vertexs, Graph_GetVertex(maze_graph, n->x, n->y));
+			Array_PushBack(vertexs, (Element)Graph_GetVertexByName(maze_graph, name));
 			COUNT = 0;
 		}
 
@@ -86,7 +86,7 @@ int Graph_SetVnE(Node *n) {
 			//printf("vertex추가실패. 이미 존재(%d)\n", name);
 
 			//그리고 현재 위치의 vertex가 생성되었거나 원래 있었거나 상관없이 결국 존재하면 Array에 담습니다.
-			Array_PushBack(vertexs, Graph_GetVertex(maze_graph, n->x, n->y));
+			Array_PushBack(vertexs, (Element)Graph_GetVertex(maze_graph, n->x, n->y));
 			//printf("배열 정보: [0]: %d, [1]: %d\n", ((Vertex *)Array_GetAt(vertexs, 0))->name, ((Vertex *)Array_GetAt(vertexs, 1))->name);
 			//배열의 정보를 바탕으로 edge를 생성하는데, 이미 생성된 edge는 0이고 성공은 1이다.
 			if (Graph_AddEdge(maze_graph, *(Vertex*)(*Array_Begin(vertexs)), *(Vertex *)(*(Array_End(vertexs) - 1)), COUNT)) {
@@ -96,7 +96,7 @@ int Graph_SetVnE(Node *n) {
 			//printf("edge추가실패(이미 존재함) (%d - %d)\n", ((Vertex*)*Array_Begin(vertexs))->name, ((Vertex*)*(Array_End(vertexs) - 1))->name);
 
 			//그리고 나서 Array에 처음 들어온 놈은 지운다.
-			Array_Erase(vertexs, Array_Begin(vertexs));
+			Array_Erase(vertexs, (Iterator)Array_Begin(vertexs));
 			//printf("배열 정보: [0]: %d, [1]: %d\n", ((Vertex *)Array_GetAt(vertexs, 0))->name, ((Vertex *)Array_GetAt(vertexs, 1))->name);
 			COUNT = 0;
 		}
@@ -227,9 +227,12 @@ int Graph_Generating() {
 	while ((last = Graph_Link(last)) != start);
 	//Graph_ViewVerexs(maze_graph);
 	//Graph_ViewEdges(maze_graph);
-	Graph_FindNeighbor(maze_graph, 1, neibor);
-	
-	Array_View(neibor);
+	//Graph_FindNeighbor(maze_graph, 1, neibor);
+	//Array_View(neibor);
+	//printf("---------------\n");
+
+	//Graph_FindNeighbor(maze_graph, 3, neibor);
+	//Array_View(neibor);
 
 	return 1;
 }
@@ -328,6 +331,39 @@ int Graph_ExistVertex(Graph *graph, int x, int y) {
 	return 0;
 }
 
+Vertex *Graph_GetVertexByName(Graph *graph, int vt_name) {
+	Iterator seek = 0, end = 0;
+	Vertex *stored_pt = 0;
+	seek = Array_Begin(graph->vertexs);
+	end = Array_End(graph->vertexs);
+
+	for (seek = seek; seek != end; ++seek) {
+		stored_pt = (Vertex *)(*seek);
+
+		if (stored_pt->name == vt_name) {
+			return stored_pt; //true를 위해 1을 리턴.
+		}
+	}
+	return 0; //means NULL
+}
+
+Vertex *Graph_getVertexByXY(Graph *graph, int x, int y) {
+	Iterator seek = 0, end = 0;
+	Vertex *stored_pt = 0;
+	seek = Array_Begin(graph->vertexs);
+	end = Array_End(graph->vertexs);
+
+	for (seek = seek; seek != end; ++seek) {
+		stored_pt = (Vertex *)(*seek);
+
+		if (stored_pt->x == x && stored_pt->y == y) {
+			return stored_pt;
+		}
+	}
+
+	return 0;
+}
+
 void Graph_ViewVerexs(Graph *graph) {
 
 	Iterator seek = 0, end = 0;
@@ -350,7 +386,7 @@ void Array_View(Array *array) {
 
 	for (seek = seek; seek != end; ++seek) {
 		vt = (Vertex *)(*seek);
-		printf("%d: x: %d y: %d\n", vt->name, vt->x, vt->y);
+		printf("[%d] x: %d y: %d\n", vt->name, vt->x, vt->y);
 	}
 }
 
@@ -414,4 +450,3 @@ void Graph_FindNeighbor(Graph *graph, int vt_name, Array *neighbor) {
 		}
 	}
 }
-

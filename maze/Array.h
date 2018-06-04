@@ -23,5 +23,6 @@ Element Array_GetAt(Array *arr, int index); //배열의 값을 가져옵니다.
 Iterator Array_Begin(Array *arr); //배열의 첫번째 요소 값을 가져옵니다.
 Iterator Array_End(Array *arr); //배열의 마지막 요소 값을 가져옵니다.
 void Array_Erase(Array *arr, Iterator pos); //배열의 특정 요소를 제거
+int Array_IsEmpty(Array * arr);
 
 #endif
