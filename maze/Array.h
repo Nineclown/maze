@@ -1,8 +1,8 @@
 #ifndef __ARRAY_H_
 #define __ARRAY_H_
 
+#include "MyFormat.h"
 //배열의 요소를 가리킨 void형 포인터 변수.
-typedef void *Element;
 
 //배열.
 typedef struct array {
@@ -10,8 +10,6 @@ typedef struct array {
 	int capacity; //배열의 크기.
 	int usage; //배열의 사용 중인 요소의 index
 }Array;
-
-typedef Element *Iterator; //Element를 가리키는 포인터. iter or temp로 사용.
 
 Array *New_Array(); //배열을 생성합니다.
 void Delete_Array(Array *arr); //배열을 제거합니다.

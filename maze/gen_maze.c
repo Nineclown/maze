@@ -167,6 +167,24 @@ void Maze_Draw() {
 	Sleep(100);
 }
 
+void Maze_Draw_Release() {
+	system("cls");
+	int i, j;
+
+	//미로를 출력합니다.
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
+			if (maze[i + j * width].c == "ⓥ")
+				printf("  ");
+			else 
+				printf("%s", maze[i + j * width].c);
+		}
+		printf("\n");
+	}
+
+	Sleep(100);
+}
+
 int Maze_CheckInput() {
 	int x = 0, y = 0;
 	printf("input X: Y: ");

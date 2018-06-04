@@ -47,10 +47,10 @@
     <ClInclude Include="Array.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="main.h">
+    <ClInclude Include="bfs.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="bfs.h">
+    <ClInclude Include="MyFormat.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

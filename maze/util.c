@@ -13,7 +13,8 @@ int runMiniGame() {
 	system("cls");
 	removeCursor();
 	setCursor(0,0);
-	showBoard();
+	Maze_Draw_Release();
+	//showBoard();
 	character_static();
 	getchar();
 
@@ -103,9 +104,8 @@ void RemoveCharacter_Set(int x, int y) {
 		setCursor(cur.X + x, cur.Y + y);
 	}
 	else if (value == 2) {
-		setCursor(24, 24);
-		printf("성공!");
-		system("pause");
+		setCursor(1, width);
+		printf("성공!\n");
 		exit(1);
 	}
 }

@@ -225,14 +225,7 @@ int Graph_Generating() {
 	last = start;
 
 	while ((last = Graph_Link(last)) != start);
-	//Graph_ViewVerexs(maze_graph);
-	//Graph_ViewEdges(maze_graph);
-	//Graph_FindNeighbor(maze_graph, 1, neibor);
-	//Array_View(neibor);
-	//printf("---------------\n");
-
-	//Graph_FindNeighbor(maze_graph, 3, neibor);
-	//Array_View(neibor);
+	Graph_SetEnd(maze_graph);
 
 	return 1;
 }
@@ -449,4 +442,55 @@ void Graph_FindNeighbor(Graph *graph, int vt_name, Array *neighbor) {
 			Array_PushBack(neighbor, opt);
 		}
 	}
+}
+
+void Graph_ViewVertexs(Graph *graph) {
+	Iterator seek = 0, end = 0;
+	Vertex *vt = 0;
+	printf("정점 개수:%d\n", graph->vertexs->usage);
+	seek = Array_Begin(graph->vertexs);
+	end = Array_End(graph->vertexs);
+
+	for (seek = seek; seek != end; ++seek) {
+		vt = (Vertex*)(*seek);
+		printf("[%d] (%d, %d)\n", vt->name, vt->x, vt->y);
+	}
+}
+
+int Graph_SetEnd(Graph *graph) {
+	int input = 0;
+	Vertex *vt = 0;
+
+	printf("ⓔ를 설정하세요: \n");
+	Graph_ViewVertexs(maze_graph);
+	scanf_s("%d", &input);
+	if (input == 1) {
+		printf("시작점입니다.\n");
+		exit(-1);
+	}
+	else {
+		vt = Graph_GetVertexByName(maze_graph, input);
+		maze[vt->x + vt->y * width].c = "ⓔ";
+	}
+
+	Maze_Draw_Release();
+
+	return 1;
+}
+
+int Graph_GetWeight(Graph *graph, Vertex *vt1, Vertex *vt2) {
+	Iterator seek = 0, end = 0;
+	Edge *edge = 0;
+
+	seek = Array_Begin(graph->edges);
+	end = Array_End(graph->edges);
+
+	for (seek = seek; seek != end; ++seek) {
+		edge = (Edge *)(*seek);
+		if (Edge_Include(edge, vt1->name) && Edge_Include(edge, vt2->name)) {
+			return edge->weight;
+		}
+	}
+
+	return -1;
 }
