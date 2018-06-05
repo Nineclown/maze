@@ -244,6 +244,7 @@ Vertex *New_Vertex(int name, int x, int y) {
 	vertex->name = name;
 	vertex->x = x;
 	vertex->y = y;
+	vertex->parent = 0;
 
 	return vertex;
 }
@@ -418,11 +419,11 @@ int Edge_Include(Edge *edge, int vt_name) {
 
 Vertex *Edge_AnOther(Edge *edge, int vt_name) {
 	if (edge->vt1.name == vt_name) {
-		return &edge->vt2;
+		return &(edge->vt2);
 	}
 
 	if (edge->vt2.name == vt_name) {
-		return &edge->vt1;
+		return &(edge->vt1);
 	}
 	return NULL;
 }
@@ -473,7 +474,7 @@ int Graph_SetEnd(Graph *graph) {
 		maze[vt->x + vt->y * width].c = "จั";
 	}
 
-	Maze_Draw_Release();
+	Maze_Draw();
 
 	return 1;
 }

@@ -20,6 +20,7 @@ int runMiniGame() {
 
 	return 0;
 }
+
 void setCursor(int x, int y) {
 	COORD pos;
 	pos.X = x;

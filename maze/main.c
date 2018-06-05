@@ -38,9 +38,9 @@ int main() {
 	Graph_Generating();
 
 	//start game
-	runMiniGame();
+	//runMiniGame();
 	
-	//BFS(maze_graph, 1);
+	BFS(maze_graph, 1);
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);
 	return 0;

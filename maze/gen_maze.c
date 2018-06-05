@@ -29,8 +29,7 @@ int Maze_Init(int x, int y) {
 }
 
 Node *Maze_Link(Node *n) {
-	//입력받은 노드(이하 노드n)와 이웃 노드를 연결합니다. 이웃 노드를 반환합니다. 
-	
+	//입력받은 노드(이하 노드n)와 이웃 노드를 연결합니다. 이웃 노드를 반환합니다. 	
 	int x, y; //이웃 노드의 좌표 값을 담을 변수입니다.
 	char dir; //노드 n이 방문할 방향을 담을 변수입니다.
 	Node *dest; //이웃 노드를 가리킬 포인터 변수입니다.
@@ -40,14 +39,9 @@ Node *Maze_Link(Node *n) {
 
 	//노드 n이 아직 방문할 방향이 남아있는 경우, 모든 방향을 방문할 때까지 반복합니다.
 	while (n->dirs) {
-		//rand()를 통해 임의의 방향을 정합니다.
-		dir = (1 << (rand() % 4));
-
-		//임의의 방향이 이미 노드 n이 방문한 방향인 경우,
-		if (~n->dirs & dir) continue;
-
-		//노드 n의 dir값에 방문 표시를 남깁니다.
-		n->dirs &= ~dir;
+		dir = (1 << (rand() % 4)); //rand()를 통해 임의의 방향을 정합니다.
+		if (~n->dirs & dir) continue; //임의의 방향이 이미 노드 n이 방문한 방향인 경우,
+		n->dirs &= ~dir; //노드 n의 dir값에 방문 표시를 남깁니다.
 
 		//임의의 방향을 방문합니다.
 		switch (dir) {
@@ -93,23 +87,17 @@ Node *Maze_Link(Node *n) {
 
 		//이웃 노드가 길인지 벽인지 확인합니다.
 		if (dest->c == "■") { //이웃 노드가 벽인 경우.
-			
-			//이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
-			if (dest->parent != NULL) continue;
-
-			//그 외의 경우, 이웃 노드와 노드 n을 연결합니다.
-			dest->parent = n;
+			if (dest->parent != NULL) //이웃 노드가 이미 방문된(탐색된) 경우엔 다른 방향으로 길을 만들어야 하므로 되돌아 갑니다.
+				continue;
+			dest->parent = n; //그 외의 경우, 이웃 노드와 노드 n을 연결합니다.
 
 			//두 노드를 가로막는 벽을 제거합니다.
 			maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
-			//maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].x = n->x + (x - n->x) / 2;
-			//maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].y = (n->y + (y - n->y) / 2);
-
-			//draw();
+			//draw(); #graphic
 
 			//이웃 노드의 벽을 부십니다.
 			maze[x + y * width].c = "  ";
-			//draw();
+			//draw(); #graphic
 
 			//이웃 노드를 반환합니다.
 			return dest;
@@ -118,10 +106,9 @@ Node *Maze_Link(Node *n) {
 			int ran = rand() % 15;	//랜덤으로 길을 뚫어서 경로를 여러개 만듭니다.			
 			if (!ran)
 				maze[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].c = "  ";
-			//draw();
+			//draw(); #graphic
 		}
 	}
-
 	//모든 방향을 탐색했지만 이미 한번씩 방문한 경우, 되돌아 갑니다. 
 	//draw();
 	return n->parent;

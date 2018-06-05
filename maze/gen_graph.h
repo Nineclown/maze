@@ -10,12 +10,15 @@
 typedef struct _vertex {
 	int name;
 	int x, y;
+	struct _vertex *parent;
 }Vertex;
+
 typedef struct _edge {
-	Vertex vt1;
-	Vertex vt2;
+	Vertex *vt1;
+	Vertex *vt2;
 	int weight;
 }Edge;
+
 typedef struct _graph {
 	Array *vertexs;
 	Array *edges;

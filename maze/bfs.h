@@ -5,6 +5,8 @@
 
 int BFS(Graph *graph, int start);
 
+int BFS_Routing(Array * visited);
+
 void BFS_AddNeighbor(Graph * graph, int vt_name, Array * neighbor, Array * visited);
 
 int BFS_CheckVisited(Array * visited, Vertex * target);
