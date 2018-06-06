@@ -1,6 +1,7 @@
 #ifndef __BFS_H_
 #define __BFS_H_
 
+#include "main.h"
 #include "gen_graph.h"
 
 int BFS(Graph *graph, int start);

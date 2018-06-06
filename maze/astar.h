@@ -1,6 +1,7 @@
 #ifndef __ASTAR_H_
 #define __ASTAR_H_
 
+#include "main.h"
 #include "gen_graph.h"
 
 typedef struct _listNode { //리스트에 사용하는 노드 구조체

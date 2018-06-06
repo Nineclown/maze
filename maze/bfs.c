@@ -62,7 +62,8 @@ int BFS_Routing(Array *visited) {
 		weight += Graph_GetWeight(maze_graph, Array_GetAt(route, count), Array_GetAt(route, --count));
 		printf("(%d -> %d)'s cost: %d\n", count + 1, count, weight);
 	}
-	printf("cost: %d\n", weight);
+	printf("\nºñ¿ë : %d\n", weight);
+	al_cost[2] = weight;
 	return 1;
 }
 

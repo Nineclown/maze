@@ -186,7 +186,7 @@ void printListNode(List *list) { //리스트 내 노드를 출력하는 함수
 
 void printPath(List *list) {
 	ListNode *it;
-	//ListNode *tmp;
+	int cost;
 
 	it = list->head;
 
@@ -194,11 +194,19 @@ void printPath(List *list) {
 		it = it->next;
 	}
 
+	cost = (int)(it->f_score);
+
+	printf("ⓔ - ");
+
 	do {
 		it = searchListNode(list, it->parent_node);
-		printf("%d ", it->node->name);
+		printf("%d - ", it->node->name);
 	} while (it->parent_node != NULL);
 
+	printf("ⓢ");
+
+	printf("\n\n비용 : %d\n", cost);
+	al_cost[4] = cost;
 
 }
 

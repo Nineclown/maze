@@ -194,8 +194,11 @@ int main() {
 
 			printf("\t 비용 \t 시간\n");
 			printf("------------------------\n");
-			printf("BFS \t %d \t %.0lfms\n", al_cost[1], al_time[1]);
-			printf("A* \t %d \t %.0lfms\n", al_cost[2], al_time[2]);
+			printf("RHS \t %d \t %.0lfms\n", al_cost[0], al_time[0]);
+			printf("DFS \t %d \t %.0lfms\n", al_cost[1], al_time[1]);
+			printf("BFS \t %d \t %.0lfms\n", al_cost[2], al_time[2]);
+			printf("DIJK \t %d \t %.0lfms\n", al_cost[3], al_time[3]);
+			printf("A* \t %d \t %.0lfms\n", al_cost[4], al_time[4]);
 			printf("\n");
 
 			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");

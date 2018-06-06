@@ -47,7 +47,7 @@ void right_hand(Node *maze, int x, int y, int dir)
 	forward(&x, &y, dir);
 	while (still_in_maze(x, y))
 	{
-		if (right_count == 500)
+		if (right_count == 100)
 		{
 			printf("No way..\n ");
 			exit(1);
