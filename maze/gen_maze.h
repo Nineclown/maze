@@ -22,6 +22,8 @@ int Maze_Init(int x, int y); //¹Ì·Î¸¦ ÃÊ±âÈ­ÇÏ°í ³ëµåµéÀÇ ±âº» °ªÀ» ÃÊ±âÈ­ÇÏ´Â Ç
 Node *Maze_Link(Node * n); //³ëµå °£ÀÇ ¿¬°áÀ» ¼³Á¤ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
 void Maze_Draw(); //¹Ì·Î¸¦ Ãâ·ÂÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
 
+void Maze_Draw_Debug();
+
 void Maze_Draw_Release();
 
 #endif

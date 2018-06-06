@@ -39,7 +39,10 @@ int main() {
 
 	//start game
 	//runMiniGame();
-	
+	Vertex *vt = 0;
+	//vt = Graph_GetEndV(maze_graph);
+	//printf("[%d]: (%d, %d)", vt->name, vt->x, vt->y);
+
 	BFS(maze_graph, 1);
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);

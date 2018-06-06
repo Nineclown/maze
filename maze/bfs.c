@@ -49,16 +49,23 @@ int BFS_Routing(Array *visited) {
 	Array *route = New_Array();
 	Iterator seek = 0;
 	Vertex *vt = 0;
-	
+	int count = 0;
+	int weight = 0;
+
 	vt = (Vertex*)(*(Array_End(visited) - 1));
-	
 	while (vt->parent != 0) {
 		Array_PushBack(route, (Element)vt);
-		vt = (Vertex *)(vt->parent);
+		vt = vt->parent;
 	}
 	Array_PushBack(route, (Element)vt);
 
 	Array_View(route);
+	count = route->usage;
+	while (count != 1) {
+		weight += Graph_GetWeight(maze_graph, Array_GetAt(route, count), Array_GetAt(route, --count));
+		printf("(%d -> %d)'s cost: %d\n", count + 1, count, weight);
+	}
+	printf("cost: %d\n", weight);
 	return 1;
 }
 

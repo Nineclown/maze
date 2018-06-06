@@ -1,4 +1,5 @@
 #include "gen_maze.h"
+#include "gen_graph.h"
 
 int Maze_Init(int x, int y) {
 	int i, j;
@@ -24,7 +25,7 @@ int Maze_Init(int x, int y) {
 		}
 	}
 
-	//draw();
+	Maze_Draw();
 	return 0;
 }
 
@@ -148,6 +149,27 @@ void Maze_Draw() {
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++)
 			printf("%s", maze[i + j * width].c);
+		printf("\n");
+	}
+
+	Sleep(100);
+}
+
+void Maze_Draw_Debug() {
+	system("cls");
+	Vertex *vt = 0;
+	int i, j;
+
+	//미로를 출력합니다.
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
+			if (maze[i + j * width].c == "ⓥ") {
+				vt = Graph_GetVertexByXY(maze_graph, maze[i + j * width].x, maze[i + j * width].y);
+				printf("%2d", vt->name);
+			}
+			else
+				printf("%s", maze[i + j * width].c);
+		}
 		printf("\n");
 	}
 
