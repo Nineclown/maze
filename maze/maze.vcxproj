@@ -124,9 +124,11 @@
     <ClCompile Include="astar.c" />
     <ClCompile Include="bfs.c" />
     <ClCompile Include="dfs.c" />
+    <ClCompile Include="dijkstra.c" />
     <ClCompile Include="gen_graph.c" />
     <ClCompile Include="gen_maze.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="rhand.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
@@ -134,9 +136,12 @@
     <ClInclude Include="astar.h" />
     <ClInclude Include="bfs.h" />
     <ClInclude Include="dfs.h" />
+    <ClInclude Include="dijkstra.h" />
     <ClInclude Include="gen_graph.h" />
     <ClInclude Include="gen_maze.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="MyFormat.h" />
+    <ClInclude Include="rhand.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

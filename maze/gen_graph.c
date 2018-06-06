@@ -459,10 +459,13 @@ int Graph_SetEnd(Graph *graph) {
 	int input = 0;
 	Vertex *vt = 0;
 
+	system("cls");
+	printf("[미로 종료점 설정]\n\n");
 	Maze_Draw_Debug();
 
-	printf("ⓔ를 설정하세요: \n");
-	Graph_ViewVertexs(maze_graph);
+	//printf("\n");
+	//Graph_ViewVertexs(maze_graph);
+	printf("\n종료점(ⓔ)으로 설정할 번호를 입력하세요 : ");
 	scanf_s("%d", &input);
 	if (input == 1) {
 		printf("시작점입니다.\n");
@@ -473,7 +476,7 @@ int Graph_SetEnd(Graph *graph) {
 		maze[vt->x + vt->y * width].c = "ⓔ";
 	}
 
-	Maze_Draw_Debug();
+	//Maze_Draw_Debug();
 
 	return 1;
 }

@@ -196,8 +196,9 @@ void Maze_Draw_Release() {
 
 int Maze_CheckInput() {
 	int x = 0, y = 0;
-	printf("input X: Y: ");
-	
+	printf("[ 미로 생성 ]\n\n");
+	printf("미로의 크기를 입력하세요 (x y) : ");
+
 	//미로의 가로 세르는 1보다 커야합니다.
 	if ((scanf_s("%d", &x) + scanf_s("%d", &y)) < 2) {
 		perror("invalid maze type!\n");

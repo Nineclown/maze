@@ -1,9 +1,4 @@
-#include "util.h"
-#include "gen_maze.h"
-#include "gen_graph.h"
-#include "astar.h"
-#include "bfs.h"
-#include "dfs.h"
+#include "main.h"
 
 /*
 미로 생성 및 탐색 프로그램입니다.
@@ -33,30 +28,187 @@ Graph_Generating()을 통해 미로를 그래프화 시키며 이 과정에서 랜덤으로 도착지점을
 그래프의 정점과 인접한 정점에 접근하는 방법: Graph_FindNeighbor() 함수를 통해 접근이 가능합니다.
 
 */
-int main() {
 
+void rh_run() {
 	clock_t before;
 	clock_t after;
 	double t;
-	
-	//start maze.
-	Maze_Generating(1, 1);
 
+	system("cls");
+	printf("[ 우선법 알고리즘 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	before = clock();
+	right_hand(maze, 1, 1, 1);
+	after = clock();
+	t = (double)((after - before));
+	printf("시간 : %.0lfms\n\n", t);
+	al_time[0] = t;
+}
+
+void dfs_run() {
+	clock_t before;
+	clock_t after;
+	double t;
+
+	system("cls");
+	printf("[ DFS 알고리즘 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	before = clock();
+	DFS(maze_graph, 1);
+	after = clock();
+	t = (double)((after - before));
+	printf("시간 : %.0lfms\n\n", t);
+	al_time[1] = t;
+}
+
+void bfs_run() {
+	clock_t before;
+	clock_t after;
+	double t;
+
+	system("cls");
+	printf("[ BFS 알고리즘 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	before = clock();
+	BFS(maze_graph, 1);
+	after = clock();
+	t = (double)((after - before));
+	printf("시간 : %.0lfms\n\n", t);
+	al_time[2] = t;
+}
+
+void dijk_run() {
+	clock_t before;
+	clock_t after;
+	double t;
+
+	system("cls");
+	printf("[ Dijkstra 알고리즘 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	before = clock();
+	dijkstra(maze_graph);
+	after = clock();
+	t = (double)((after - before));
+	printf("시간 : %.0lfms\n\n", t);
+	al_time[3] = t;
+}
+
+void astar_run() {
+	clock_t before;
+	clock_t after;
+	double t;
+
+	system("cls");
+	printf("[ A* 알고리즘 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	before = clock();
+	astart(Graph_GetStartV(maze_graph), Graph_GetEndV(maze_graph));
+	after = clock();
+	t = (double)((after - before));
+	printf("시간 : %.0lfms\n\n", t);
+	al_time[4] = t;
+}
+
+int main() {
+	int menu;
+	COORD pos = { 0, 0 };
+
+	//start maze
+	Maze_Generating(1, 1);
 	Graph_Generating();
 
+	dijkstra(maze_graph);
 	//start game
 	//runMiniGame();
 
-	before = clock();
-	//astart(Graph_GetStartV(maze_graph), Graph_GetEndV(maze_graph));
-	//BFS(maze_graph, 1);
-	DFS(maze_graph, 1);
-	after = clock();
+	do {
+		system("cls");
+		printf("[ 알고리즘 선택 ]\n\n");
+		Maze_Draw_Debug();
 
+		printf("\n");
+		printf("(1) 좌선법 알고리즘\n");
+		printf("(2) DFS 알고리즘\n");
+		printf("(3) BFS 알고리즘\n");
+		printf("(4) Dijkstra 알고리즘\n");
+		printf("(5) A* 알고리즘\n");
+		printf("(6) 모든 알고리즘 비교\n");
+		printf("(0) 프로그램 종료\n");
+		printf("\n번호를 입력하세요 : ");
+		scanf_s("%d", &menu);
 
+		switch (menu) {
+		case 1: //좌선법 알고리즘.
+			rh_run();
 
-	t = (double)((after - before));
-	printf("\n\n\n\n%.0lf ms", t);
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 2: //DFS 알고리즘.
+			dfs_run();
+
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 3: //BFS 알고리즘.
+			bfs_run();
+
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 4: //Dijkstra 알고리즘.
+			dijk_run();
+
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 5: //A* 알고리즘.
+			astar_run();
+
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 6: //모두 비교.
+			bfs_run();
+			astar_run();
+
+			system("cls");
+			printf("[ 모든 알고리즘 비교 ]\n\n");
+			Maze_Draw_Debug();
+			printf("\n");
+
+			printf("\t 비용 \t 시간\n");
+			printf("------------------------\n");
+			printf("BFS \t %d \t %.0lfms\n", al_cost[1], al_time[1]);
+			printf("A* \t %d \t %.0lfms\n", al_cost[2], al_time[2]);
+			printf("\n");
+
+			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+			system("pause > nul");
+			break;
+		case 0:
+			printf("\n프로그램을 종료합니다.\n\n");
+			return 0;
+		}
+
+	} while (menu != 0);
+
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);
 	return 0;
