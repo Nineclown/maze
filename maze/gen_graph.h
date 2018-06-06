@@ -32,8 +32,8 @@ Array *vertexs;
 int Maze_ReInit();
 
 int Maze_FindDir(Node *n);
-int Graph_SetVnE(Node * n);
-Node *Graph_Link(Node * n);
+int Graph_SetVnE(Node *n);
+Node *Graph_Link(Node *n);
 int Graph_Generating();
 Graph *New_Graph();
 Vertex *New_Vertex(int name, int x, int y);

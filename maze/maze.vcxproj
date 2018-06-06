@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Array.c" />
+    <ClCompile Include="astar.c" />
     <ClCompile Include="bfs.c" />
     <ClCompile Include="gen_graph.c" />
     <ClCompile Include="gen_maze.c" />
@@ -129,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
+    <ClInclude Include="astar.h" />
     <ClInclude Include="bfs.h" />
     <ClInclude Include="gen_graph.h" />
     <ClInclude Include="gen_maze.h" />

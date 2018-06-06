@@ -21,22 +21,19 @@ int BFS(Graph * graph, int start) {
 														   //
 		//visited
 		Array_PushBack(visited, (Element)currentVertex); //가져온 정점을 방문했다고 visited 배열에 담습니다.
-		//printf("중간=visited==========\n");
-		//Array_View(visited);
 
 		//도착지를 방문했다면 BFS search를 종료합니다.
 		if (maze[currentVertex->x + currentVertex->y * width].c == "ⓔ") {
 			printf("find way!\n");
-			Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다. 수정 필요.
+			Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다.
 			break;
 		}
-		Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다. 수정 필요.
+		Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다.
 		
 		//enqueue
 		BFS_AddNeighbor(maze_graph, currentVertex->name, neighbor, visited);//가져온 정점과 인접한 정점 중 방문하지 않은 정점들을 neighbor에 추가합니다.
 	}
-
-	printf("최종=visited==========\n");
+	printf("DFS_visited\n");
 	Array_View(visited);
 
 	printf("routing\n");

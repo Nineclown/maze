@@ -1,6 +1,7 @@
 #include "util.h"
 #include "gen_maze.h"
 #include "gen_graph.h"
+#include "astar.h"
 #include "bfs.h"
 
 /*
@@ -32,6 +33,11 @@ Graph_Generating()을 통해 미로를 그래프화 시키며 이 과정에서 랜덤으로 도착지점을
 
 */
 int main() {
+
+	clock_t before;
+	clock_t after;
+	double t;
+
 	//start maze.
 	Maze_Generating(1, 1);
 
@@ -39,11 +45,16 @@ int main() {
 
 	//start game
 	//runMiniGame();
-	Vertex *vt = 0;
-	//vt = Graph_GetEndV(maze_graph);
-	//printf("[%d]: (%d, %d)", vt->name, vt->x, vt->y);
 
+	before = clock();
+	//astart(Graph_GetStartV(maze_graph), Graph_GetEndV(maze_graph));
 	BFS(maze_graph, 1);
+	after = clock();
+
+
+
+	t = (double)((after - before));
+	printf("\n\n\n\n%.0lf ms", t);
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);
 	return 0;

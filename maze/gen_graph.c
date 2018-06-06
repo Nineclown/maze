@@ -1,5 +1,4 @@
 #include "gen_graph.h"
-#include "gen_maze.h"
 
 int Maze_ReInit() {
 	int i = 0, j = 0;
@@ -16,7 +15,7 @@ int Maze_ReInit() {
 				else
 					iter->parent = 0;
 				if (!Maze_FindDir(iter))
-					DieWithError("Maze_FindDir");
+					DieWithError("Maze_ReInit()");
 			}
 		}
 	}
@@ -460,6 +459,8 @@ int Graph_SetEnd(Graph *graph) {
 	int input = 0;
 	Vertex *vt = 0;
 
+	Maze_Draw_Debug();
+
 	printf("ⓔ를 설정하세요: \n");
 	Graph_ViewVertexs(maze_graph);
 	scanf_s("%d", &input);
@@ -472,7 +473,7 @@ int Graph_SetEnd(Graph *graph) {
 		maze[vt->x + vt->y * width].c = "ⓔ";
 	}
 
-	Maze_Draw();
+	Maze_Draw_Debug();
 
 	return 1;
 }
@@ -509,3 +510,18 @@ Vertex *Graph_GetEndV(Graph *graph) {
 		iter++;
 	return Graph_GetVertexByXY(maze_graph, iter->x, iter->y);
 }
+
+int Graph_GetCost(Array *route) {
+	int count = 0;
+	int weight = 0;
+
+	Array_View(route);
+	count = route->usage;
+	while (count != 1) {
+		weight += Graph_GetWeight(maze_graph, Array_GetAt(route, count), Array_GetAt(route, --count));
+		printf("(%d -> %d)'s cost: %d\n", count + 1, count, weight);
+	}
+	printf("cost: %d\n", weight);
+	return 1;
+}
+

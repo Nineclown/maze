@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include "util.h"
 
+
 typedef struct _node {
 	int x, y; //노드의 위치를 담는 변수입니다.
 	void *parent; //연결된 노드의 포인터 변수입니다.
