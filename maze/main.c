@@ -3,6 +3,7 @@
 #include "gen_graph.h"
 #include "astar.h"
 #include "bfs.h"
+#include "dfs.h"
 
 /*
 미로 생성 및 탐색 프로그램입니다.
@@ -37,7 +38,7 @@ int main() {
 	clock_t before;
 	clock_t after;
 	double t;
-
+	
 	//start maze.
 	Maze_Generating(1, 1);
 
@@ -48,7 +49,8 @@ int main() {
 
 	before = clock();
 	//astart(Graph_GetStartV(maze_graph), Graph_GetEndV(maze_graph));
-	BFS(maze_graph, 1);
+	//BFS(maze_graph, 1);
+	DFS(maze_graph, 1);
 	after = clock();
 
 

@@ -123,6 +123,7 @@
     <ClCompile Include="Array.c" />
     <ClCompile Include="astar.c" />
     <ClCompile Include="bfs.c" />
+    <ClCompile Include="dfs.c" />
     <ClCompile Include="gen_graph.c" />
     <ClCompile Include="gen_maze.c" />
     <ClCompile Include="main.c" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="astar.h" />
     <ClInclude Include="bfs.h" />
+    <ClInclude Include="dfs.h" />
     <ClInclude Include="gen_graph.h" />
     <ClInclude Include="gen_maze.h" />
     <ClInclude Include="MyFormat.h" />
