@@ -4,7 +4,8 @@ int DFS(Graph * graph, int start) {
 	Array * visited = New_Array();
 	Array *stack = New_Array();
 	DFS_Runner(maze_graph, start, visited, stack);
-	//Array_View(visited); #debug
+	//printf("DFS visited\n");
+	//Array_View(visited); //debug
 	DFS_Routing(visited);
 	return 1;
 }
@@ -43,6 +44,7 @@ int DFS_Routing(Array *visited) {
 	}
 	Array_PushBack(route, (Element)vt);
 
+	//printf("DFS routing\n");
 	//Array_View(route);
 	DFS_GetCost(route);
 
@@ -57,7 +59,7 @@ int DFS_GetCost(Array *route) {
 	Vertex *vt2 = 0;
 
 	count = route->usage - 1;
-	//printf("BFS calculating cost\n");
+	//printf("DFS calculating cost\n");
 	while (count != 0) {
 		vt1 = (Vertex *)(Array_GetAt(route, count));
 		vt2 = (Vertex *)(Array_GetAt(route, --count));
@@ -91,7 +93,6 @@ void DFS_AddNeighbor(Graph *graph, Vertex *vt, Array *stack, Array *visited) {
 	}
 }
 
-//가져온 정점의 이름이 방문한 배열에 존재하는 검사
 int DFS_CheckVisited(Array *visited, Vertex *target) {
 	Iterator seek = 0, end = 0;
 	Vertex *vt = 0;

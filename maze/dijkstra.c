@@ -47,5 +47,5 @@ void dijkstra(Graph *graph) {
 		}
 	}
 	al_cost[3] = dist[end];
-	printf("%d\n", dist[end]);
+	//printf("%d\n", dist[end]);
 }

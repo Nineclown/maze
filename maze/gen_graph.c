@@ -525,4 +525,3 @@ int Graph_GetCost(Array *route) {
 	printf("cost: %d\n", weight);
 	return 1;
 }
-
