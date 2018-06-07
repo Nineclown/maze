@@ -63,8 +63,10 @@ void showBoard(void) {
 
 void character_static(void) {
 	int kb;
+
+	GAME = 1;
 	setCursor(2, 1);  //케릭터 시작위치
-	while (1) {
+	while (GAME) {
 		while (!_kbhit()) {
 			showCharacter();
 			Sleep(100);
@@ -107,7 +109,7 @@ void RemoveCharacter_Set(int x, int y) {
 	else if (value == 2) {
 		setCursor(1, width);
 		printf("성공!\n");
-		exit(1);
+		GAME = 0;
 	}
 }
 

@@ -128,7 +128,7 @@
     <ClCompile Include="gen_graph.c" />
     <ClCompile Include="gen_maze.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="rhand.c" />
+    <ClCompile Include="rhs.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
@@ -141,7 +141,7 @@
     <ClInclude Include="gen_maze.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MyFormat.h" />
-    <ClInclude Include="rhand.h" />
+    <ClInclude Include="rhs.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -119,6 +119,44 @@ void astar_run() {
 	al_time[4] = t;
 }
 
+int show_menu() {
+	system("cls");
+	printf("[ 알고리즘 선택 ]\n\n");
+	Maze_Draw_Debug();
+
+	printf("\n");
+	printf("(1) RHS 알고리즘\n");
+	printf("(2) DFS 알고리즘\n");
+	printf("(3) BFS 알고리즘\n");
+	printf("(4) Dijkstra 알고리즘\n");
+	printf("(5) A* 알고리즘\n");
+	printf("(6) 모든 알고리즘 비교\n");
+	printf("(0) 프로그램 종료\n");
+	printf("\n번호를 입력하세요 : ");
+}
+
+int show_table() {
+	system("cls");
+	printf("[ 모든 알고리즘 비교 ]\n\n");
+	Maze_Draw_Debug();
+	printf("\n");
+
+	printf("\t 비용 \t 시간\n");
+	printf("------------------------\n");
+	printf("RHS \t %d \t %.0lfms\n", al_cost[0], al_time[0]);
+	printf("DFS \t %d \t %.0lfms\n", al_cost[1], al_time[1]);
+	printf("BFS \t %d \t %.0lfms\n", al_cost[2], al_time[2]);
+	printf("DIJK \t %d \t %.0lfms\n", al_cost[3], al_time[3]);
+	printf("A* \t %d \t %.0lfms\n", al_cost[4], al_time[4]);
+	printf("\n");
+}
+
+int set_end(COORD pos) {
+	printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	system("pause > nul");
+}
+
 int main() {
 	int menu;
 	COORD pos = { 0, 0 };
@@ -126,65 +164,39 @@ int main() {
 	//start maze
 	Maze_Generating(1, 1);
 	Graph_Generating();
-	//rh_run();
-	//dfs_run();
-	//bfs_run();
-	//start game
-	//runMiniGame();
 
-	
+
 	do {
-		system("cls");
-		printf("[ 알고리즘 선택 ]\n\n");
-		Maze_Draw_Debug();
-
-		printf("\n");
-		printf("(1) RHS 알고리즘\n");
-		printf("(2) DFS 알고리즘\n");
-		printf("(3) BFS 알고리즘\n");
-		printf("(4) Dijkstra 알고리즘\n");
-		printf("(5) A* 알고리즘\n");
-		printf("(6) 모든 알고리즘 비교\n");
-		printf("(0) 프로그램 종료\n");
-		printf("\n번호를 입력하세요 : ");
+		if (!show_menu())
+			DieWithError("Menu Error");
 		scanf_s("%d", &menu);
 
 		switch (menu) {
 		case 1: //좌선법 알고리즘.
 			rh_run();
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			set_end(pos);
 			break;
+
 		case 2: //DFS 알고리즘.
 			dfs_run();
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			set_end(pos);
 			break;
+
 		case 3: //BFS 알고리즘.
 			bfs_run();
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			set_end(pos);
 			break;
+
 		case 4: //Dijkstra 알고리즘.
 			dijk_run();
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			set_end(pos);
 			break;
+
 		case 5: //A* 알고리즘.
 			astar_run();
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			set_end(pos);
 			break;
+
 		case 6: //모두 비교.
 			rh_run();
 			dfs_run();
@@ -192,24 +204,15 @@ int main() {
 			dijk_run();
 			astar_run();
 
-			system("cls");
-			printf("[ 모든 알고리즘 비교 ]\n\n");
-			Maze_Draw_Debug();
-			printf("\n");
-
-			printf("\t 비용 \t 시간\n");
-			printf("------------------------\n");
-			printf("RHS \t %d \t %.0lfms\n", al_cost[0], al_time[0]);
-			printf("DFS \t %d \t %.0lfms\n", al_cost[1], al_time[1]);
-			printf("BFS \t %d \t %.0lfms\n", al_cost[2], al_time[2]);
-			printf("DIJK \t %d \t %.0lfms\n", al_cost[3], al_time[3]);
-			printf("A* \t %d \t %.0lfms\n", al_cost[4], al_time[4]);
-			printf("\n");
-
-			printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-			system("pause > nul");
+			show_table();
+			set_end(pos);
 			break;
+
+		case 7:
+			runMiniGame();		
+			set_end(pos);
+			break;
+
 		case 0:
 			printf("\n프로그램을 종료합니다.\n\n");
 			return 0;

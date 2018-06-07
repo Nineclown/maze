@@ -1,4 +1,4 @@
-#include "rhand.h"
+#include "rhs.h"
 
 #define R 1
 #define D 2
@@ -54,12 +54,13 @@ void RHS(int x, int y, char dir) {
 		count++;
 
 		if (count > 150) {
-			printf("cycle!\n");
+			//printf("cycle!\n");
+			count = 9999;
 			break;
 		}
 	}
 	free(start);
 
 	al_cost[0] = count;
-	printf("비용: %d\n", al_cost[0]);
+	//printf("비용: %d\n", al_cost[0]);
 }

@@ -11,6 +11,8 @@
 #include <time.h>
 #include "gen_maze.h"
 
+int GAME;
+
 //편의성을 위한 함수.
 void DieWithError(char* errorMessage);
 

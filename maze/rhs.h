@@ -1,5 +1,5 @@
-#ifndef __RHAND_H_
-#define __RHAND_H_
+#ifndef __RHS_H_
+#define __RHS_H_
 
 #include "gen_graph.h"
 #include "main.h"
