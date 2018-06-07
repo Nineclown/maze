@@ -1,47 +1,40 @@
 #include "dfs.h"
 
-int weight;
 int DFS(Graph * graph, int start) {
 	Array * visited = New_Array();
 	Array *stack = New_Array();
 	DFS_Runner(maze_graph, start, visited, stack);
-	Array_View(visited);
-
-	weight += dfs_cost(visited);
+	//Array_View(visited); #debug
+	DFS_Routing(visited);
 	return 1;
 }
 
 int DFS_Runner(Graph *graph, int vt_name, Array *visited, Array *stack) {
-	Vertex *cur = 0;
-	Array_PushBack(visited, Graph_GetVertexByName(maze_graph, vt_name)); //정점을 방문하고.
-	DFS_AddNeighbor(maze_graph, vt_name, stack, visited); //인접 정점을 스택에 저장하고.
+	Vertex *currentVertex = 0;
 
+	currentVertex = Graph_GetVertexByName(maze_graph, vt_name);
+
+	Array_PushBack(visited, (Element)currentVertex); //정점을 방문하고 저장.
+	DFS_AddNeighbor(maze_graph, currentVertex, stack, visited); //인접 정점을 스택에 저장하고.
+	
 	while (!Array_IsEmpty(stack)) {
-		cur = (Vertex *)(*(Array_End(stack) - 1)); //stack에서 pop()함.
+		currentVertex = (Vertex *)(*(Array_End(stack) - 1)); //stack에서 pop()함.
 		Array_Erase(stack, (Array_End(stack) - 1)); //stack에서 pop()한 결과 자동으로 안지워지니까 지움.
-		Array_PushBack(visited, (Element)cur); //visited에 현재 방문한 정점 저장.
-
-		if (maze[cur->x + cur->y * width].c == "ⓔ") {//도착지를 방문했다면 DFS search를 종료합니다.
-			printf("find way!\n");
-			Array_PushBack(visited, Graph_GetVertexByName(maze_graph, vt_name));
-			//al_cost[1] = weight;
+		//Array_PushBack(visited, (Element)cur); //visited에 현재 방문한 정점 저장.
+		if (maze[currentVertex->x + currentVertex->y * width].c == "ⓔ") {
+			Array_PushBack(visited, (Element)currentVertex);
 			break;
 		}
-		DFS_Runner(maze_graph, cur->name, visited, stack);
-
+		if (DFS_Runner(maze_graph, currentVertex->name, visited, stack))
+			return 1;
 	}
-	//   Array_View(visited);
 	return 1;
-
 }
 
-
-int dfs_cost(Array *visited) {
+int DFS_Routing(Array *visited) {
 	Array *route = New_Array();
 	Iterator seek = 0;
 	Vertex *vt = 0;
-	int count = 0;
-	int weight = 0;
 
 	vt = (Vertex*)(*(Array_End(visited) - 1));
 	while (vt->parent != 0) {
@@ -51,18 +44,33 @@ int dfs_cost(Array *visited) {
 	Array_PushBack(route, (Element)vt);
 
 	//Array_View(route);
-	count = route->usage;
-	while (count != 1) {
-		weight += Graph_GetWeight(maze_graph, Array_GetAt(route, count), Array_GetAt(route, --count));
-		printf("(%d -> %d)'s cost: %d\n", count + 1, count, weight);
-	}
-	al_cost[1] = weight;
-	printf("\n비용 : %d\n", weight);
-	return weight;
+	DFS_GetCost(route);
+
+	return 1;
 }
 
+int DFS_GetCost(Array *route) {
+	int count = 0;
+	int total = 0;
+	int weight = 0;
+	Vertex *vt1 = 0;
+	Vertex *vt2 = 0;
 
-void DFS_AddNeighbor(Graph *graph, int vt_name, Array *stack, Array *visited) {
+	count = route->usage - 1;
+	//printf("BFS calculating cost\n");
+	while (count != 0) {
+		vt1 = (Vertex *)(Array_GetAt(route, count));
+		vt2 = (Vertex *)(Array_GetAt(route, --count));
+		weight = Graph_GetWeight(maze_graph, vt1, vt2);
+		total += weight;
+		//printf("[%d] -> [%d] cost: %d\n", vt1->name, vt2->name, weight);
+	}
+	//printf("\n비용 : %d\n", total);
+	al_cost[1] = total;
+	return 1;
+}
+
+void DFS_AddNeighbor(Graph *graph, Vertex *vt, Array *stack, Array *visited) {
 	Iterator seek = 0, end = 0;
 	Edge *edge = 0;
 
@@ -72,10 +80,11 @@ void DFS_AddNeighbor(Graph *graph, int vt_name, Array *stack, Array *visited) {
 	//그래프의 모든 간선을 다 탐색합니다.
 	for (seek = seek; seek != end; ++seek) {
 		edge = (Edge *)(*seek);
-		if (Edge_Include(edge, vt_name)) { //특정 간선이 타겟 정점을 갖고 있을 때,
+		if (Edge_Include(edge, vt->name)) { //특정 간선이 타겟 정점을 갖고 있을 때,
 			Vertex *opt;
-			opt = Edge_AnOther(edge, vt_name); //타겟 정점과 공유한 간선의 반대편 정점을 가져옵니다.
+			opt = Edge_AnOther(edge, vt->name); //타겟 정점과 공유한 간선의 반대편 정점을 가져옵니다.
 			if (!DFS_CheckVisited(stack, opt) && !DFS_CheckVisited(visited, opt)) {
+				opt->parent = vt;
 				Array_PushBack(stack, (Element)opt);
 			}
 		}

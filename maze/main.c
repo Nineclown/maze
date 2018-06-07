@@ -133,6 +133,8 @@ int show_menu() {
 	printf("(6) 모든 알고리즘 비교\n");
 	printf("(0) 프로그램 종료\n");
 	printf("\n번호를 입력하세요 : ");
+
+	return 1;
 }
 
 int show_table() {
@@ -149,9 +151,11 @@ int show_table() {
 	printf("DIJK \t %d \t %.0lfms\n", al_cost[3], al_time[3]);
 	printf("A* \t %d \t %.0lfms\n", al_cost[4], al_time[4]);
 	printf("\n");
+
+	return 1;
 }
 
-int set_end(COORD pos) {
+void set_end(COORD pos) {
 	printf("아무 키나 누르면 알고리즘 선택 화면으로 돌아갑니다.");
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 	system("pause > nul");
@@ -164,8 +168,7 @@ int main() {
 	//start maze
 	Maze_Generating(1, 1);
 	Graph_Generating();
-
-
+	
 	do {
 		if (!show_menu())
 			DieWithError("Menu Error");

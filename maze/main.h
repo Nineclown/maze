@@ -19,5 +19,5 @@ void dijk_run();
 void astar_run();
 int show_menu();
 int show_table();
-int set_end(COORD pos);
+void set_end(COORD pos);
 int main();
