@@ -40,7 +40,7 @@ void rh_run() {
 	printf("\n");
 
 	before = clock();
-	right_hand(maze, 1, 1, 1);
+	RHS(1, 1, 1);
 	after = clock();
 	t = (double)((after - before));
 	printf("시간 : %.0lfms\n\n", t);
@@ -126,13 +126,13 @@ int main() {
 	//start maze
 	Maze_Generating(1, 1);
 	Graph_Generating();
-	rh_run();
+	//rh_run();
 	//dfs_run();
 	//bfs_run();
 	//start game
 	//runMiniGame();
 
-	/*
+	
 	do {
 		system("cls");
 		printf("[ 알고리즘 선택 ]\n\n");
@@ -216,7 +216,7 @@ int main() {
 		}
 
 	} while (menu != 0);
-	*/
+	
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);
 	return 0;

@@ -1,61 +1,65 @@
 #include "rhand.h"
 
-int right_count = 0;
-void right(int *dir)
-{
+#define R 1
+#define D 2
+#define L 4
+#define U 8
+
+void RHS_Right(char *dir) {
 	*dir <<= 1;
-	*dir = (*dir > LEFT) ? UP : *dir;
+	*dir = (*dir == 16) ? R : *dir;
 }
-void left(int *dir)
-{
+
+void RHS_Left(char *dir) {
 	*dir >>= 1;
-	*dir = (*dir == 0) ? LEFT : *dir;
+	*dir = (*dir == 0) ? U : *dir;
 }
 
-void forward(int *x, int *y, int dir)
-{
-
-	*x = (dir == LEFT) ? --(*x) :
-		(dir == RIGHT) ? ++(*x) : *x;
-	*y = (dir == UP) ? --(*y) :
-		(dir == DOWN) ? ++(*y) : *y;
-
+void RHS_Forward(int *x, int *y, char dir) {
+	*x = (dir == U) ? --(*x) : (dir == D) ? ++(*x) : *x;
+	*y = (dir == L) ? --(*y) : (dir == R) ? ++(*y) : *y;
+	//printf("(%d, %d)로 이동. 방향: %d\n", *x, *y, dir);
 }
-Node* Wall_ahead(Node *maze, int x, int y, int dir)
-{
-	Node *target = 0;
-	target = maze;
-	x = (dir == LEFT) ? --x :
-		(dir == RIGHT) ? ++x : x;
-	y = (dir == UP) ? --y :
-		(dir == DOWN) ? ++y : y;
-	target->x = x;
-	target->y = y;
-	right_count++;
-	return target;
+
+int RHS_Wall_Ahead(Node *maze, int x, int y, char dir) {
+	x = (dir == U) ? --x : (dir == D) ? ++x : x;
+	y = (dir == L) ? --y : (dir == R) ? ++y : y;
+
+	return (maze[x + y * width].c == "■");
 }
-int still_in_maze(int x, int y)
-{
-	if (x>0 && x<width - 1 && y>0 && y< height - 1)
+
+int RHS_FindEnd(int x, int y) {
+	if (maze[x + y * width].c == "ⓔ")
 		return 1;
 	else
 		return 0;
 }
 
-void right_hand(Node *maze, int x, int y, int dir)
-{
-	forward(&x, &y, dir);
-	while (still_in_maze(x, y))
-	{
-		if (right_count == 100)
-		{
-			printf("No way..\n ");
-			exit(1);
-		}
-		right(&dir);
-		while (Wall_ahead(maze, x, y, dir))
-			left(&dir);
-		forward(&x, &y, dir);
-	}
+void RHS(int x, int y, char dir) {
+	int count = 0;
 
+	Node *start = 0;
+	start = (Node*)malloc(sizeof(Node));
+	start->parent = 0;
+	start->x = x;
+	start->y = y;
+	start->dirs = dir;
+
+	while (!RHS_FindEnd(x, y)) {
+		RHS_Right(&dir);
+		while (RHS_Wall_Ahead(maze, x, y, dir)) {
+			RHS_Left(&dir);
+		}
+		RHS_Forward(&x, &y, dir);
+		count++;
+
+		if (count > 150) {
+			printf("cycle!\n");
+			break;
+		}
+	}
+	free(start);
+
+	al_cost[0] = count;
+	printf("비용: %d\n", al_cost[0]);
 }

@@ -172,16 +172,16 @@ void printListNode(List *list) { //리스트 내 노드를 출력하는 함수
 	it = list->head;
 
 	if (it == NULL) {
-		printf("비어있음\n");
+		//printf("비어있음\n"); #debug
 		return;
 	}
 
 	do {
-		printf("%d ", it->node->name);
+		//printf("%d ", it->node->name); #debug
 		it = it->next;
 	} while (it != NULL);
 
-	printf("\n");
+	//printf("\n"); #debug
 }
 
 void printPath(List *list) {
@@ -196,17 +196,18 @@ void printPath(List *list) {
 
 	cost = (int)(it->f_score);
 
-	printf("ⓔ - ");
+	//printf("ⓔ - "); #debug
 
 	do {
 		it = searchListNode(list, it->parent_node);
-		if (it->node->name != 1)
-			printf("%d - ", it->node->name);
+		if (it->node->name != 1) {
+			//printf("%d - ", it->node->name); #debug
+		}
 	} while (it->parent_node != NULL);
 
-	printf("ⓢ");
+	//printf("ⓢ"); #debug
 
-	printf("\n\n비용 : %d\n", cost);
+	//printf("\n\n비용 : %d\n", cost); #debug
 	al_cost[4] = cost;
 
 }
@@ -221,23 +222,23 @@ void astart(Vertex *start, Vertex *end) { //A* 알고리즘 함수
 	closed_list->cnt = 0;
 
 	addListNode(closed_list, start, NULL, 0);
-	printf("Open List: ");
-	printListNode(open_list);
-	printf("Closed List: ");
+	//printf("Open List: "); #debug
+	printListNode(open_list); 
+	//printf("Closed List: "); #debug
 	printListNode(closed_list);
-	printf("\n");
+	//printf("\n"); #debug
 
 
 	while (getLastListNode(closed_list)->node != end) { //마지막 노드에 도달할 때까지 반복
 		addOpenList(getLastListNode(closed_list));
-		printf("Open List: ");
+		//printf("Open List: "); #debug
 		printListNode(open_list);
 
 		addClosedList(getLowFScoreListNode(open_list));
-		printf("Closed List: ");
+		//printf("Closed List: "); #debug
 		printListNode(closed_list);
 
-		printf("\n");
+		//printf("\n"); #debug
 	}
 
 	printPath(closed_list);

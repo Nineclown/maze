@@ -26,7 +26,7 @@ int BFS(Graph * graph, int start) {
 
 		//도착지를 방문했다면 BFS search를 종료합니다.
 		if (maze[currentVertex->x + currentVertex->y * width].c == "ⓔ") {
-			printf("find way!\n");
+			//printf("find way!\n");
 			Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다.
 			break;
 		}
@@ -35,10 +35,10 @@ int BFS(Graph * graph, int start) {
 		//enqueue
 		BFS_AddNeighbor(maze_graph, currentVertex, neighbor, visited);//가져온 정점과 인접한 정점 중 방문하지 않은 정점들을 neighbor에 추가합니다.
 	}
-	printf("BFS visited\n");
-	Array_View(visited);
+	//printf("BFS visited\n");
+	//Array_View(visited);
 
-	printf("BFS routing\n");
+	//printf("BFS routing\n");
 	BFS_Routing(visited);
 
 	return 1;
@@ -56,7 +56,7 @@ int BFS_Routing(Array *visited) {
 	}
 	Array_PushBack(route, (Element)vt);
 
-	Array_View(route);
+	//Array_View(route);
 	BFS_GetCost(route);
 	
 	return 1;
@@ -70,15 +70,15 @@ int BFS_GetCost(Array *route) {
 	Vertex *vt2 = 0;
 
 	count = route->usage - 1;
-	printf("BFS calculating cost\n");
+	//printf("BFS calculating cost\n");
 	while (count != 0) {
 		vt1 = (Vertex *)(Array_GetAt(route, count));
 		vt2 = (Vertex *)(Array_GetAt(route, --count));
 		weight = Graph_GetWeight(maze_graph, vt1, vt2);
 		total += weight;
-		printf("[%d] -> [%d] cost: %d\n", vt1->name, vt2->name, weight);
+		//printf("[%d] -> [%d] cost: %d\n", vt1->name, vt2->name, weight);
 	}
-	printf("\n비용 : %d\n", total);
+	//printf("\n비용 : %d\n", total);
 	al_cost[2] = total;
 	return 1;
 }
