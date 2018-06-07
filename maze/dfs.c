@@ -24,7 +24,7 @@ int DFS_Runner(Graph *graph, int vt_name, Array *visited, Array *stack) {
 		if (maze[cur->x + cur->y * width].c == "ⓔ") {//도착지를 방문했다면 DFS search를 종료합니다.
 			printf("find way!\n");
 			Array_PushBack(visited, Graph_GetVertexByName(maze_graph, vt_name));
-			al_cost[1] = weight;
+			//al_cost[1] = weight;
 			break;
 		}
 		DFS_Runner(maze_graph, cur->name, visited, stack);

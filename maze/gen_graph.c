@@ -19,7 +19,7 @@ int Maze_ReInit() {
 			}
 		}
 	}
-	Maze_Draw();
+	//Maze_Draw();
 	return 1;
 }
 
@@ -86,7 +86,6 @@ int Graph_SetVnE(Node *n) {
 			Array_PushBack(vertexs, (Element)Graph_GetVertex(maze_graph, n->x, n->y));
 			//printf("배열 정보: [0]: %d, [1]: %d\n", ((Vertex *)Array_GetAt(vertexs, 0))->name, ((Vertex *)Array_GetAt(vertexs, 1))->name);
 			
-			//배열의 정보를 바탕으로 edge를 생성하는데, 이미 생성된 edge는 0이고 성공은 1이다.
 			if (COUNT % 2)
 				COUNT++;
 			if (COUNT == 0)
@@ -205,11 +204,10 @@ int Graph_Generating() {
 	//그래프 요소들 초기화.
 	maze_graph = New_Graph();
 	vertexs = New_Array();
-	Array_SetSize(vertexs, 0, 0);
+	//Array_SetSize(vertexs, 0, 0);
 
 	//미로 --> 그래프 변환
 	Maze_ReInit();
-	//Maze_Draw();
 	Maze_Draw();
 
 	//미로에서 시작점을 찾습니다.

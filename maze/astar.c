@@ -200,7 +200,8 @@ void printPath(List *list) {
 
 	do {
 		it = searchListNode(list, it->parent_node);
-		printf("%d - ", it->node->name);
+		if (it->node->name != 1)
+			printf("%d - ", it->node->name);
 	} while (it->parent_node != NULL);
 
 	printf("¨ß");

@@ -5,11 +5,13 @@ int BFS(Graph * graph, int start) {
 	Array *neighbor = New_Array();
 	Vertex *currentVertex = 0;
 
+	currentVertex = Graph_GetVertexByName(maze_graph, start);
+
 	//visited
-	Array_PushBack(visited, (Element)Graph_GetVertexByName(maze_graph, start)); //현재 정점(실제론 시작 정점)를 방문했다고 visited 배열에 담습니다.
+	Array_PushBack(visited, (Element)currentVertex); //현재 정점(실제론 시작 정점)를 방문했다고 visited 배열에 담습니다.
 	
 	//neighbor
-	BFS_AddNeighbor(maze_graph, start, neighbor, visited); //현재 정점과 인접한 정점들을 neighbor 배열에 담습니다.
+	BFS_AddNeighbor(maze_graph, currentVertex, neighbor, visited); //현재 정점과 인접한 정점들을 neighbor 배열에 담습니다.
 	
 	//printf("중간=neighbor==========\n");
 	//Array_View(neighbor);
@@ -31,12 +33,12 @@ int BFS(Graph * graph, int start) {
 		Array_Erase(neighbor, (Iterator)Array_Begin(neighbor)); //배열에 값을 제거합니다.
 		
 		//enqueue
-		BFS_AddNeighbor(maze_graph, currentVertex->name, neighbor, visited);//가져온 정점과 인접한 정점 중 방문하지 않은 정점들을 neighbor에 추가합니다.
+		BFS_AddNeighbor(maze_graph, currentVertex, neighbor, visited);//가져온 정점과 인접한 정점 중 방문하지 않은 정점들을 neighbor에 추가합니다.
 	}
-	printf("DFS_visited\n");
+	printf("BFS visited\n");
 	Array_View(visited);
 
-	printf("routing\n");
+	printf("BFS routing\n");
 	BFS_Routing(visited);
 
 	return 1;
@@ -46,8 +48,6 @@ int BFS_Routing(Array *visited) {
 	Array *route = New_Array();
 	Iterator seek = 0;
 	Vertex *vt = 0;
-	int count = 0;
-	int weight = 0;
 
 	vt = (Vertex*)(*(Array_End(visited) - 1));
 	while (vt->parent != 0) {
@@ -57,17 +57,33 @@ int BFS_Routing(Array *visited) {
 	Array_PushBack(route, (Element)vt);
 
 	Array_View(route);
-	count = route->usage;
-	while (count != 1) {
-		weight += Graph_GetWeight(maze_graph, Array_GetAt(route, count), Array_GetAt(route, --count));
-		printf("(%d -> %d)'s cost: %d\n", count + 1, count, weight);
-	}
-	printf("\n비용 : %d\n", weight);
-	al_cost[2] = weight;
+	BFS_GetCost(route);
+	
 	return 1;
 }
 
-void BFS_AddNeighbor(Graph *graph, int vt_name, Array *neighbor, Array *visited) {
+int BFS_GetCost(Array *route) {
+	int count = 0;
+	int total = 0;
+	int weight = 0;
+	Vertex *vt1 = 0;
+	Vertex *vt2 = 0;
+
+	count = route->usage - 1;
+	printf("BFS calculating cost\n");
+	while (count != 0) {
+		vt1 = (Vertex *)(Array_GetAt(route, count));
+		vt2 = (Vertex *)(Array_GetAt(route, --count));
+		weight = Graph_GetWeight(maze_graph, vt1, vt2);
+		total += weight;
+		printf("[%d] -> [%d] cost: %d\n", vt1->name, vt2->name, weight);
+	}
+	printf("\n비용 : %d\n", total);
+	al_cost[2] = total;
+	return 1;
+}
+
+void BFS_AddNeighbor(Graph *graph, Vertex *vt, Array *neighbor, Array *visited) {
 	Iterator seek = 0, end = 0;
 	Edge *edge = 0;
 
@@ -77,11 +93,11 @@ void BFS_AddNeighbor(Graph *graph, int vt_name, Array *neighbor, Array *visited)
 	//그래프의 모든 간선을 다 탐색합니다.
 	for (seek = seek; seek != end; ++seek) {
 		edge = (Edge *)(*seek);
-		if (Edge_Include(edge, vt_name)) { //특정 간선이 타겟 정점을 갖고 있을 때,
+		if (Edge_Include(edge, vt->name)) { //특정 간선이 타겟 정점을 갖고 있을 때,
 			Vertex *opt; //인접한 정점.
-			opt = Edge_AnOther(edge, vt_name); //이게 넘겨주는 게 주소이긴한데 복사한 값의 주소지 원래 값의 주소가 아니야.
+			opt = Edge_AnOther(edge, vt->name); //이게 넘겨주는 게 주소이긴한데 복사한 값의 주소지 원래 값의 주소가 아니야.
 			if (!BFS_CheckVisited(visited, opt) && !BFS_CheckVisited(neighbor, opt)) { //인접한 정점이 아직, 방문하지 않고 큐에 넣어지지도 않았다면,
-				opt->parent = Graph_GetVertexByName(maze_graph, vt_name); //maze_graph의 정점을 가져다 씀.
+				opt->parent = vt; //maze_graph의 정점을 가져다 씀.
 				Array_PushBack(neighbor, (Element)opt);
 				//printf("중간=neighbor==========\n");
 				//Array_View(neighbor);
@@ -94,7 +110,6 @@ void BFS_AddNeighbor(Graph *graph, int vt_name, Array *neighbor, Array *visited)
 	//Array_View(neighbor);
 }
 
-//가져온 정점의 이름이 방문한 배열에 존재하는 검사
 int BFS_CheckVisited(Array *visited, Vertex *target) {
 	Iterator seek = 0, end = 0;
 	Vertex *vt = 0;

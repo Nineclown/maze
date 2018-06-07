@@ -35,7 +35,7 @@ void rh_run() {
 	double t;
 
 	system("cls");
-	printf("[ 우선법 알고리즘 ]\n\n");
+	printf("[ RHS 알고리즘 ]\n\n");
 	Maze_Draw_Debug();
 	printf("\n");
 
@@ -126,18 +126,20 @@ int main() {
 	//start maze
 	Maze_Generating(1, 1);
 	Graph_Generating();
-
-	dijkstra(maze_graph);
+	rh_run();
+	//dfs_run();
+	//bfs_run();
 	//start game
 	//runMiniGame();
 
+	/*
 	do {
 		system("cls");
 		printf("[ 알고리즘 선택 ]\n\n");
 		Maze_Draw_Debug();
 
 		printf("\n");
-		printf("(1) 좌선법 알고리즘\n");
+		printf("(1) RHS 알고리즘\n");
 		printf("(2) DFS 알고리즘\n");
 		printf("(3) BFS 알고리즘\n");
 		printf("(4) Dijkstra 알고리즘\n");
@@ -184,7 +186,10 @@ int main() {
 			system("pause > nul");
 			break;
 		case 6: //모두 비교.
+			rh_run();
+			dfs_run();
 			bfs_run();
+			dijk_run();
 			astar_run();
 
 			system("cls");
@@ -211,7 +216,7 @@ int main() {
 		}
 
 	} while (menu != 0);
-
+	*/
 	//Delete_Maze(maze);
 	//Delete_Graph(maze_graph);
 	return 0;

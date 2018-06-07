@@ -12,6 +12,7 @@
 int al_cost[5];
 double al_time[5];
 
+void rh_run();
 void dfs_run();
 void bfs_run();
 void dijk_run();

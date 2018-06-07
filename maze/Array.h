@@ -5,7 +5,7 @@
 //배열의 요소를 가리킨 void형 포인터 변수.
 
 //배열.
-typedef struct array {
+typedef struct _array {
 	Element *base; //배열은 시작주소와.
 	int capacity; //배열의 크기.
 	int usage; //배열의 사용 중인 요소의 index
