@@ -13,9 +13,6 @@ int BFS(Graph * graph, int start) {
 	//neighbor
 	BFS_AddNeighbor(maze_graph, currentVertex, neighbor, visited); //현재 정점과 인접한 정점들을 neighbor 배열에 담습니다.
 	
-	//printf("중간=neighbor==========\n");
-	//Array_View(neighbor);
-
 	while (!Array_IsEmpty(neighbor)) { //neighbor 배열이 빌 때까지 반복합니다. //도착점이 생기면 도착점에 도달할 때까지 탐색을하면 됩니다.
 		
 		//dequeue
@@ -37,7 +34,6 @@ int BFS(Graph * graph, int start) {
 	}
 	//printf("BFS visited\n");
 	//Array_View(visited);
-
 	//printf("BFS routing\n");
 	BFS_Routing(visited);
 
